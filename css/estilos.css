@@ -1,0 +1,121 @@
+html, body{
+  background-color: beige;
+  color: brown;
+}
+
+.bordes{
+  border: 4px ridge brown;
+}
+
+.small {
+  float: left;
+  color: red;
+}
+
+.obligatorio {
+  color: red;
+}
+
+.container, input{
+  background-color: beige;
+}
+
+input {
+    text-align: right;
+}
+
+form input:focus {
+    outline: outset 3px chocolate;
+}
+
+td, th {
+  text-align: center;
+  padding: 0;
+}
+.glyphicon{
+    font-size: 1.3em;
+    text-align: center;
+    margin: auto;
+    padding-top: 0.4em;
+    background-color: transparent;
+    border: 0;
+}
+
+.glyphicon-trash{
+  margin-left: 0.4em;
+  color: red;
+}
+
+.glyphicon-pencil{
+    margin-left: 0.4em;
+    color: green;
+}
+
+.glyphicon-search {
+    position: relative;
+    top: -.2em;
+}
+
+.botones{
+  font-size: 1.5em;
+  width: 6em;
+  background-color: #006dcc;
+}
+
+.botones:hover{
+  background-color: #188aed;
+}
+
+#alerta {
+    font-size: 5em;
+    color: darkred;
+    text-align: center;
+    margin: 0 auto;
+    width: 80%;
+}
+#ejemplo {
+    width: 30%;
+    margin: 1.5em auto;
+    padding: .5em;
+    border-radius: .7em;
+    color: bisque;
+}
+
+#confirmar, #denegar {
+    width: 5em;
+    margin: 0 1em;
+}
+
+
+#modalWindow {
+    position: fixed;
+    top: 6.5em;
+    background-color: beige;
+    border-radius: .5em;
+    width: 90%;
+    margin: 0 5%!important;
+    border: double 3px brown;
+}
+#modalWindow .glyphicon-remove-circle {
+    background-color: transparent!important;
+    position: relative;
+    left: 50%;
+}
+
+#simbologia, #alerta {
+    width: 85%;
+}
+
+#searchBox {
+  padding: .5em;
+  margin-top: .5em;
+}
+#tipoBusqueda{
+  margin: 0 1em 0 2em;
+}
+@media screen and (max-width: 768px) {
+  #tipoBusqueda, #valorBusqueda {
+    min-width: 80%!important;
+    margin: 0 0 0 8%!important;
+  }
+}
