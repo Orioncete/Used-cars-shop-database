@@ -3,6 +3,30 @@
 
 var coches = new Array;
 
+// FUNCIONES E INSTRUCCIONES PARA FIREBASE-------------------------------------------------------------------------
+
+var baseDeDatos = firebase.database();
+baseDeDatos.ref("metaDatos").push();
+baseDeDatos.ref("metaDatos").set({
+    app: "base de datos de concesionario",
+    version: "0.0.1",
+    authors: "pedro pablo gonzalo, david carrión",
+    email: "uliaoth@hotmail.com",
+});
+
+if(baseDeDatos.ref("dataBase").orderByValue()) {
+    baseDeDatos.ref("dataBase").on("value", function(snapshot){
+        if (snapshot.val() != null) {
+            coches = snapshot.val();
+        }
+        muestraDatos();
+    });
+}
+else {
+    baseDeDatos.ref("dataBase").push();
+    baseDeDatos.ref("dataBase").set(coches);
+}
+
 // FUNCIONES PARA LA COMPROBACION Y VALIDACION DE DATOS------------------------------------------------------------
 
 // Función para la eliminación de simbolos comprometidos de las entradas a evaluar---------------------------------
@@ -17,10 +41,10 @@ function limpiaEntrada(cuadroEntrada) {
             prohibidos += " " + simbolo + " ";
             $("#simbologia").html(mensaje);
             entrada = entrada.split(simbolo).join("");
-            mensaje += '<h4 style="color:green;">Se han eliminado los siguientes caracteres no permitidos:<br> ' + prohibidos.trim() + '</h4>';
+            mensaje += '<h4 style="color:green;">Se han eliminado los siguientes caracteres no permitidos:<br> " ' + prohibidos.trim() + ' "</h4>';
         }
     });
-    if (mensaje != ""){
+    if(mensaje != ""){
         modalOn();
         $("#simbologia").html(mensaje);
     }
@@ -41,10 +65,10 @@ function patronMatricula(cuadroMatricula) {
     else {
         if(expreg.test(matricula) && matricula && matricula != ""){
             $(cuadroMatricula).val(matricula);
+            muestraAlerta(null, null, null, null, cuadroMatricula, "lightgreen", "false");
             return true;
         }
         else {
-//            reiniciarAlerta();
             modalOn();
             muestraAlerta("<h3>La matrícula introducida no tiene el formato correcto.<br>Por favor introduzca una matrícula valida.</h3>", "<h4><u>Formatos admitidos:</u> <br><br>1234-LO<br>AB-1234-LO<br>1234-ABC</h4>", "transparent", "darkred", cuadroMatricula, "coral", "true");
             return false;
@@ -60,7 +84,7 @@ function matriculaUnica(cuadroMatricula) {
         var matricula = cuadroMatricula.value.replace(" ", "").replace(/-/g, "").toUpperCase();
         $.each(coches, function(indice, coche) {
             $.each(coche, function(propiedad, valor) {
-                if (propiedad == "matricula" && valor == matricula) {
+                if (propiedad == "0matricula" && valor == matricula) {
                     duplicado = true;
                 }
             });
@@ -71,6 +95,7 @@ function matriculaUnica(cuadroMatricula) {
             return false;
         }
         else { // Si la matrícula no existe en la base de datos
+            muestraAlerta(null, null, null, null, cuadroMatricula, "lightgreen", "false");
             return true;
         }
     }
@@ -84,6 +109,7 @@ function validarMarca(cuadroMarca) {
         marca.toLowerCase();
         marca = marca.charAt(0).toUpperCase() + marca.slice(1).toLowerCase();
         $(cuadroMarca).val(marca);
+        muestraAlerta(null, null, null, null, cuadroMarca, "lightgreen", "false");
         return true;
     }
     else {
@@ -111,6 +137,7 @@ function validarColor(cuadroColor) {
         }
         color.trim();
         $(cuadroColor).val(color);
+        muestraAlerta(null, null, null, null, cuadroColor, "lightgreen", "false");
         return true;
     }
     else {
@@ -127,6 +154,7 @@ function validarPrecio(cuadroPrecio) {
     var precio = cuadroPrecio.value;
     if (precio && precio != null && precio != "" && precio.length <= 11 && /^\d+(\.\d{1,4})?$/.test(precio) && parseFloat(precio) <= 1000000 && !isNaN(precio)) {
         $(cuadroPrecio).val(parseFloat(precio).toFixed(2));
+        muestraAlerta(null, null, null, null, cuadroPrecio, "lightgreen", "false");
         return true;
     }
     else {
@@ -142,13 +170,19 @@ function validarPrecio(cuadroPrecio) {
 function validarKms(cuadroKms) {
     var kms = cuadroKms.value;
     if (!kms || kms == null || kms == "" || (kms.length >= 1 && kms.length <= 10 && /^\d+(\.\d{1,3})?$/.test(kms) && parseFloat(kms) <= 1000000 && !isNaN(kms))) {
-        $(cuadroKms).val(parseFloat(kms).toFixed(2));
+        if (kms != "") {
+            $(cuadroKms).val(parseFloat(kms).toFixed(2));
+        }
+        else {
+            $(cuadroKms).val("");
+        }
+        muestraAlerta(null, null, null, null, cuadroKms, "lightgreen", "false");
         return true;
     }
     else{
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>El kilometraje introducido no es correcto.<br>Por favor, aseguresé de no introducir valores superiores<br>al <u>millón de kilómetros</u> ni con más de <u>tres decimales</u>.</h3>", "<h4>Tampoco introduzca unidades de medida.</h4>", "transparent", "darkred", cuadroKms, "coral", "true");
+        muestraAlerta("<h3>El kilometraje introducido no es correcto.<br>Por favor, aseguresé de no introducir valores superiores<br>al <u>millón de kilómetros</u> ni más de <u>tres decimales</u>.</h3>", "<h4>Tampoco introduzca <br>unidades de medida,<br> ni ninguna letra o simbolo.</h4>", "transparent", "darkred", cuadroKms, "coral", "true");
         return false;
     }
 }
@@ -169,6 +203,7 @@ function validarModelo(cuadroModelo) {
             modelo = modelo.replace(modelo.match(/[^\d\s]/)[0], modelo.match(/[^\d\s]/)[0].toUpperCase());
         }
         $(cuadroModelo).val(modelo);
+        muestraAlerta(null, null, null, null, cuadroModelo, "lightgreen", "false");
         return true;
     }
 }
@@ -183,11 +218,16 @@ function recogeDatos(){
     reiniciarAlerta();
     var matricula = document.getElementById("matricula"), marca = document.getElementById("marca"), modelo = document.getElementById("modelo"), kms = document.getElementById("kms"), color = document.getElementById("color"), precio = document.getElementById("precio");
     if(matriculaUnica(matricula) && validarMarca(marca) && validarModelo(modelo) && validarKms(kms) && validarColor(color) && validarPrecio(precio)) {
-        var objeto = {}, entradas = $("input");
+        var objeto = {}, entradas = $("input"), i=0;
         $.each(entradas, function(indice, valor){
-            objeto[valor.name] = valor.value;
+            if (valor.name == "kms" && valor.value == "") {
+                valor.value = "0";
+            }
+            objeto[i + valor.name] = valor.value;
+            i++;
         });
         coches.push(objeto);
+        baseDeDatos.ref("dataBase").set(coches);
         entradas.val("");
         entradas.css("background-color", "transparent");
         entradas[0].focus();
@@ -210,17 +250,76 @@ function recogeDatos(){
     $("#alta").css("background-color", "#006dcc");
 }
 
+// FUNCIONES PARA PAGINAR LA TABLA DE CONTENIDOS------------------------------------------------------------------------------
+
+function paginadora(pagina){
+    var lineasPerPage = parseInt($("#paginador").val());
+    var pages =  Math.ceil((coches.length) / lineasPerPage);
+    var paginas = "<button type='button' class='glyphicon glyphicon-circle-arrow-left controlPage' id='controlLeft'></button>";
+    for (i=0; i<pages; i++) {
+        paginas += "<button type='button' class='paginaIcon' id='page" + (i+1) + "' value='" + (i+1) + "'>" + (i+1) + "</button>";
+    }
+    paginas += "<button type='button' class='glyphicon glyphicon-circle-arrow-right controlPage' id='controlRight'></button>";
+    $("#paginas").html(paginas);
+    if (!pagina) {
+        $(".paginaIcon").removeClass("currentPage");
+        $("#page1").addClass("currentPage");
+    }
+    else {
+        $("#page" + pagina.val()).addClass("currentPage");
+    }
+    $("#controlLeft").click(function (){muevePagina(-1, pages);});
+    $("#controlRight").click(function (){muevePagina(+1, pages);});
+    $(".paginaIcon").click(function(){fastStep(this);});
+    var paginaSelect = $(".currentPage");
+    var origenPagina = (parseInt($(".currentPage").val() -1) * lineasPerPage);
+    var finalPagina = origenPagina + lineasPerPage;
+    if (finalPagina >= coches.length) {finalPagina = coches.length;}
+    var pageContent = coches.slice(parseInt(origenPagina), parseInt(finalPagina));
+    return pageContent;
+}
+
+function muevePagina(step, pages) {
+    var paginaActual = $(".currentPage");
+    var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
+    paginaActual.removeClass("currentPage");
+    if(numeroPagina >= 1 && numeroPagina <= pages){
+        var nuevaPagina = numeroPagina + step;
+    }
+    if (nuevaPagina < 1) {nuevaPagina = pages}
+    if (nuevaPagina > pages) {nuevaPagina = 1}
+    var paginaElegida = $("#page" + nuevaPagina);
+    paginaElegida.addClass("currentPage");
+    muestraDatos($(".currentPage"));
+}
+
+function fastStep(pagina) {
+    var pagina = pagina.value;
+    var paginaActual = $(".currentPage");
+    var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
+    var lineasPerPage =parseInt($("#paginador").val());
+    var pages =  Math.ceil((coches.length) / lineasPerPage);
+    var step = pagina - numeroPagina;
+    muevePagina(step, pages);
+}
+
 // Función para mostrar los datos en la tabla-------------------------------------------------------------------------------
 
-function muestraDatos(){
+function muestraDatos(pagina){
+    var pageContent = paginadora(pagina);
+    var lineasPerPage =parseInt($("#paginador").val());
+    var paginaActual = $(".currentPage");
+    var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
     $("#contenidos").html("");
-    $.each(coches, function(indice, objeto){
-        var fila = "<tr class='lineaDatos' id='fila" + indice + "'></tr><br>";
+    $.each(pageContent, function(indice, objeto){
+        var nuevoIndice = indice + (lineasPerPage * (numeroPagina - 1));
+        var fila = "<tr class='lineaDatos' id='fila" + nuevoIndice + "'></tr><br>";
         $("#contenidos").append(fila);
         $.each(objeto, function(nombre, valor){
-                $("#fila" + indice).append("<td id='" + nombre + indice + "'>" + valor + "</td>");
+                $("#fila" + nuevoIndice).append("<td id='" + nombre + nuevoIndice + "'>" + valor + "</td>");
         });
-        $("#fila" + indice).parent().children().last().append("<button onclick='editaDatos(this);' class='botonEdit glyphicon glyphicon-pencil'></button><button onclick='borraDatos(this);' class='botonBorrar glyphicon glyphicon-trash'></button>");
+        $("#fila" + nuevoIndice).parent().children().last().append("<button onclick='editaDatos(this);' class='botonEdit glyphicon glyphicon-pencil'></button><button onclick='borraDatos(this);' class='botonBorrar glyphicon glyphicon-trash'></button>");
+        $(".botoncicos").css("width", "4em");
     });
 }
 
@@ -231,6 +330,7 @@ function borraDatos(boton) {
         var matricula = $(boton).parent().children().first().text();
         reiniciarAlerta();
         modalOn();
+        $("#modalCloser").css("display", "none");
         muestraAlerta("<h3>¿Realmente desea eliminar los datos referentes a la matrícula " + matricula + " ?</h3>", "<button type='button' id='confirmar' class='btn btn-danger' value='true'>SI</button><button type='button' id='denegar' class='btn btn-primary' value='false'>NO</button>", "transparent", "transparent", "#alerta", "transparent", "false");
         $("#ejemplo button").click(function() {
             var acceptado = "false";
@@ -239,9 +339,11 @@ function borraDatos(boton) {
                 var identificador = $(boton).parent().attr("id");
                 var indice = identificador.replace("fila", "");
                 coches.splice(parseInt(indice), 1);
+                baseDeDatos.ref("dataBase").set(coches);
             }
-            muestraDatos();
-            reiniciarAlerta();
+        $("#modalCloser").css("display", "inline-block");
+        muestraDatos($(".currentPage"));
+        reiniciarAlerta();
         });
     }
     else {
@@ -257,22 +359,21 @@ function borraDatos(boton) {
 function editaDatos(boton) {
     var linea = boton;
     $(".botonEdit").attr("onclick", "return false;");
-    $(".botonEdit").addClass("disabled");
-    $(".botonBorrar").attr("onmouseup", "return false;");
-    $(".botonBorrar").addClass("disabled");
+    $(".botonBorrar").attr("onclick", "return false;");
     var identificador = $(linea).parent().attr("id");
     var indice = identificador.replace("fila", "");
     $.each(coches[parseInt(indice)], function(nombre,valor){
+    nombre = nombre.slice(1);
         $("#" + nombre).val(valor);
     });
+    baseDeDatos.ref("dataBase").set(coches);
     $("#alta").html("Confirmar");
     $("#alta").css("background-color", "#32c932");
     borraDatos(linea);
     $("#alta").click(function(){
         $(".botonEdit").attr("onclick", "editaDatos(this);");
-        $(".botonEdit").removeClass("disabled");
-        $(".botonBorrar").attr("onclick", "borraDatos(this); muestraDatos();");
-        $(".botonBorrar").removeClass("disabled");
+        $(".botonBorrar").attr("onclick", "borraDatos(this);");
+        
     });
 }
 
@@ -283,6 +384,7 @@ function editaDatos(boton) {
 
 
 function cuadroBusqueda() {
+    $("form input").css("background-color", "transparent");
     reiniciarAlerta();
     $("#simbologia").html("");
     $("#buscador").css({"font-size": "1.5em", "color": "#006dcc"});
@@ -292,30 +394,18 @@ function cuadroBusqueda() {
     $("#tipoBusqueda").css("height", "1.7em");
     $("#searchBox").css({"background-color": "lightgrey", "border-radius": ".3em"});
     $("#lupa").css("margin-left", ".5em");
-    $("#buscar").css({"color": "#006dcc", "background-color": "transparent"});
-    $("#buscar").html("Volver");
-    $("#buscar").attr("id", "volverBusqueda");
+    $("#buscar").css("display", "none");
+    $("#volverBusqueda").css("display", "inline-block");
     $("#tipoBusqueda").focus();
-    $("#volverBusqueda").click(function(){
-//        reiniciarAlerta();
-        $("#buscador").html("");
-        $("#buscador").css("background-color", "transparent");
-//        muestraDatos();
-        $("#volverBusqueda").attr("id", "buscar");
-        $("#buscar").click(function(){cuadroBusqueda()});
-        $("#buscar").css({"background-color": "#006dcc", "color": "beige"});
-        $("#buscar").html("Buscar");
-    });
-    $("#cuerpo").click(function(newFocus){
-        if (!$("#searchBox").is(newFocus.target) && $("#searchBox").has(newFocus.target).length == 0 && !$("#buscar").is(newFocus.target) && !$("#volverBusqueda").is(newFocus.target) && !$("#modalCloser").is(newFocus.target)) {
-//            reiniciarAlerta();
+    $("#cuerpo").mouseup(function(newFocus){
+        if ((!$("#searchBox").is(newFocus.target) && $("#searchBox").has(newFocus.target).length == 0 && !$("#buscar").is(newFocus.target) && !$("#modalCloser").is(newFocus.target) && !$("#confirmar").is(newFocus.target) && !$("#denegar").is(newFocus.target) && !$(".botonBorrar").is(newFocus.target) && !$(".botonEdit").is(newFocus.target)) || $("#volverBusqueda").is(newFocus.target)) {
+            reiniciarAlerta();
             $("#buscador").html("");
             $("#buscador").css("background-color", "transparent");
-//            muestraDatos();
-            $("#buscar").css({"background-color": "#006dcc", "color": "beige"});
-            $("#buscar").html("Buscar");
-            $("#volverBusqueda").attr("id", "buscar");
-            $("#buscar").click(function(){cuadroBusqueda()});
+            muestraDatos($(".currentPage"));
+            $("#volverBusqueda").css("display", "none");
+            $("#buscar").css("display", "inline-block");
+            $("#cuerpo").off();
         }
     });
 }
@@ -335,13 +425,14 @@ function buscaDatos(tipo, termino) {
             $("#contenidos").html("");
             $.each(coches, function(indice, coche) {
                 $.each(coche, function(propiedad, valor) {
-                    if (tipo == propiedad && termino.value == valor) {
+                    if (tipo == propiedad.slice(1) && termino.value == valor) {
                         var fila = "<tr class='lineaDatos' id='fila" + indice + "'></tr><br>";
                         $("#contenidos").append(fila);
                         $.each(coche, function(propiedad, valor) {
                             $("#fila" + indice).append("<td id='" + propiedad + indice + "'>" + valor + "</td>");
                         });
                         $("#fila" + indice).parent().children().last().append("<button onclick='editaDatos(this);' class='botonEdit glyphicon glyphicon-pencil'></button><button onclick='borraDatos(this);' class='botonBorrar glyphicon glyphicon-trash'></button>");
+                        $(".botoncicos").css("width", "4em");
                         $("#" + propiedad + indice).css("background-color", "lightgreen");
                         reiniciarAlerta();
                         $("#valorBusqueda").css("background-color", "transparent");
@@ -387,11 +478,15 @@ function modalOn(){
 $(function(){ // FUNCION GLOBAL DE jQuery------------------------------------------------------------------------------------
 
     $("#modalWindow").css("display", "none"); // Cerramos la ventana modal al cargar la página
-    
+
     // Manejadores de evento de los botones----------------------------------------------------------------------------------
 
-    $("#alta").click(function(){recogeDatos(); muestraDatos()});
+    $("#alta").click(function(){recogeDatos();muestraDatos($(".currentPage"))});
     $("#buscar").click(function(){cuadroBusqueda()});
+
+    // Manejador de evento del selector de lineas de la tabla----------------------------------------------------------------
+
+    $("#paginador").change(function(){muestraDatos($("#page1"));});
 
     // Manejadores de evento de los campos input-----------------------------------------------------------------------------
 

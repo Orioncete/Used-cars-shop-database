@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="css/estilos.css">
     <!-- Javascript -->
     <script src="js/jquery-3.0.0.min.js" type="text/javascript"></script>
-    <script src="js/guion.js" type="text/javascript" defer></script>
+<!--    <script src="js/jquery-ui.min.js"></script>-->
+    <script src="js/guionFirebase.js" type="text/javascript" defer></script>
+<!--    <script src="js/paging.js" type="text/javascript"></script>-->
     <title>Tabla de contenido editable</title>
 </head>
 <body id="cuerpo">
@@ -18,54 +20,50 @@
         <h1>Vehículos disponibles en tienda</h1>
     </header><br><br>
     <div class="container bordes">
-    <span class="small">Los campos que contengan asterisco (*) son obligatorios</span>
+    <span class="small">Los campos que contengan asterisco (*) son obligatorios.</span>
     <br><br>
     <form action="" method="post" id="formulario">
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
         <fieldset>
-        <span class="obligatorio">*</span>
-        <label for="matricula">Matrícula:</label>
-        <input type="text" id="matricula" name="matricula" value="" placeholder="ES-1234-ABC" maxlength="11" required>
+        <label class="required col-xs-12 col-md-5" for="matricula">Matrícula:</label>
+        <input class="col-xs-12 col-md-5" type="text" id="matricula" name="matricula" value="" placeholder="ES-1234-ABC" maxlength="11" required tabindex="1" title="Introduzca la matrícula del vehículo">
         </fieldset>
         <br><br>
        </div>
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <fieldset>
-          <span class="obligatorio">*</span>
-          <label for="marca">Marca:</label>
-          <input type="text" id="marca" name="marca" value="" required>
+          <label class="required col-xs-12 col-md-5" for="marca">Marca:</label>
+          <input type="text" class="col-xs-12 col-md-5" id="marca" name="marca" value="" required tabindex="2" title="Introduzca la marca del fabricante">
           </fieldset><br><br>
        </div>
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <fieldset>
-          <span class="obligatorio">*</span>
-          <label for="modelo">Modelo:</label>
-          <input type="text" id="modelo" name="modelo" value="" required>
+          <label class="required col-xs-12 col-md-5" for="modelo">Modelo:</label>
+          <input type="text" class="col-xs-12 col-md-5" id="modelo" name="modelo" value="" required tabindex="3" title="Introduzca el modelo o referencia del vehículo">
           </fieldset><br><br>
        </div>
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <fieldset>
-          <label for="kms">Kilómetros:</label>
-          <input type="number" id="kms" name="kms" value="">
+          <label class="col-xs-12 col-md-5" for="kms">Kilómetros:</label>
+          <input class="col-xs-12 col-md-5" type="text" id="kms" name="kms" value="" tabindex="4" title="Introduzca los Kms del vehículo">
           </fieldset><br><br>
        </div>
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <fieldset>
-          <label for="color">Color:</label>
-          <input type="text" id="color" name="color" value="">
+          <label class="col-xs-12 col-md-5" for="color">Color:</label>
+          <input class="col-xs-12 col-md-5" type="text" id="color" name="color" value="" tabindex="5" title="Introduzca el color del vehículo">
           </fieldset><br><br>
        </div>
        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <fieldset>
-          <span class="obligatorio">*</span>
-          <label for="precio">Precio:</label>
-          <input type="number" id="precio" name="precio" value="" required>
+          <label class="col-xs-12 col-md-5 required" for="precio">Precio:</label>
+          <input class="col-xs-12 col-md-5" type="text" id="precio" name="precio" value="" required tabindex="6" title="Introduzca el precio del vehículo">
           </fieldset><br><br>
        </div>
     </form>
     </div><br><br>
     <div class="container">
-	    <table class="table table-hovered uploadsTable table-responsive">
+	    <table  id="tabla" class="table table-responsive">
 	      <thead>
 	      <tr>
 	       <th>Matrícula</th>
@@ -74,31 +72,40 @@
 	       <th>Kms</th>
 	       <th>Color</th>
 	       <th>Precio</th>
+	       <th>
+	           <select id="paginador">
+                   <option value="null" disabled>--Nº Filas--</option>
+                   <option value="5" selected>5</option>
+                   <option value="10">10</option>
+                   <option value="15">15</option>
+                   <option value="20">20</option>
+	           </select>
+           </th>
 	      </tr>
 	      </thead>
 	      <tbody id="contenidos"></tbody>
+            <tfoot><tr><td colspan="7" id="paginas"></td></tr></tfoot>
 	    </table>
     </div>
-    <section class="container">
-       <div id="botonera" class="container text-center">
-        <button type="button" id="alta" class="btn btn-primary botones">Alta</button>
-        <button type="button" id="buscar" class="btn btn-primary finalizeButton botones">Buscar</button>
-        </div>
+    <section id="botonera" class="row text-center">
+        <button type="button" id="alta" class="btn btn-primary botones" tabindex="7">Alta</button>
+        <button type="button" id="buscar" class="btn btn-primary botones" tabindex="8" onclick="cuadroBusqueda();">Buscar</button>
+        <button type="button" id="volverBusqueda" class="btn btn-primary botones" tabindex="9" style="display: none;">Volver</button>
     </section>
     <section class="container container-fluid text-center">
         <div class="container" id="buscador"></div>
     </section>
     <section class="container container-fluid text-center" id="modalWindow">
-       <button type="button" class="glyphicon glyphicon-remove-circle" id="modalCloser"></button>
         <div class="container" id="simbologia"></div>
         <div class="container" id="alerta"></div>
         <div class="container" id="ejemplo"></div>
+        <button type="button" class="btn btn-primary" id="modalCloser">Entendido</button>
     </section>
-    
-<!--    Configuración para Firebase   -->
 
+<!--  Configuración para Firebase   -->
 
 <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+
 <script>
   // Initialize Firebase
   var config = {
@@ -109,7 +116,8 @@
   };
   firebase.initializeApp(config);
 </script>
-    
+
 <!--    Fin de configuración para firebase  -->
+
 </body>
 </html>

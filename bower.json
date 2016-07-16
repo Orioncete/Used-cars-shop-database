@@ -1,0 +1,32 @@
+{
+  "name": "base de datos concesionario",
+  "description": "tabla editable con soporte para firebase ambientada en concesionario de coches",
+  "main": "index.html",
+  "keywords": [
+    "firebase",
+    "used-cars",
+    "database",
+    "table",
+    "form",
+    "html5",
+    "css3",
+    "bootstrap"
+  ],
+  "authors": [
+    "pedro pablo gonzalo garcía"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "^3.1.0",
+    "bootstrap": "^3.3.6",
+    "firebase": "^3.1.0"
+  }
+}
