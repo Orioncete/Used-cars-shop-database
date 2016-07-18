@@ -126,16 +126,28 @@ form label {
 fieldset {
     clear: both;
 }
+#marca::-webkit-calendar-picker-indicator { /*Elimina el icono para desplegar la lista de sugerencias del input*/
+  display: none;
+}
+#color::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 .required:after {
     content: " *";
     color: red;
 }
-
+tfoot {
+    background-color: #ddc6ab;
+    opacity: .6;
+}
 #paginas {
+    display: inline-block;
+    background-color: beige;
+    margin: 0 auto;
+    border-radius: .3em;
     text-align: center;
-    padding: 0;
-    margin: 0;
-    font-size: 1.2em;
+    padding: 0 0 .2em;
 }
 
 .controlPage {
@@ -143,8 +155,11 @@ fieldset {
     display: inline-block;
     background-color: transparent;
     color: brown;
-    font-size: 1.6em;
-    opacity: .6;
+    font-size: 1.2em;
+}
+
+#controlInicio, #controlFinal {
+    margin-top: -1em;
 }
 
 .paginaIcon {
@@ -152,7 +167,7 @@ fieldset {
     border: 0;
     position: relative;
     width: 2em;
-    top: -.35em;
+    top: -.15em;
     margin: 0 .1em;
 }
 
@@ -160,13 +175,27 @@ fieldset {
     background-color: brown;
     color: beige;
     font-weight: bold;
-    opacity: .8;
     border-radius: .3em;
 }
 
 #paginador {
     float: left;
     width: 4.5em;
+}
+
+#printButton {
+    float: left;
+    margin: .3em 0 0 .9em;
+    background-color: brown;
+    color: beige;
+    border: 0;
+    border-radius: .1em;
+}
+
+#selectorPagina {
+    padding: .2em;
+    background-color: beige;
+    border-radius: .2em;
 }
 
 table {
@@ -219,5 +248,11 @@ th:last-child {
     #ejemplo {
       width: 80%;
     }
+    th:nth-child(4), th:nth-child(5), td:nth-child(4), td:nth-child(5) {
+        display: none;
+    }
+    tbody td:nth-child(6) {
+        text-align: right;
+        padding-right: 0!important;
+    }
 }
-

@@ -105,9 +105,19 @@ function matriculaUnica(cuadroMatricula) {
 
 function validarMarca(cuadroMarca) {
     var marca = cuadroMarca.value;
-    if (marca && marca != null && marca != "" && marca.length <= 11 && /^[a-zA-Z]+$/.test(marca)) {
+    if (marca && marca != null && marca != "" && marca.length <= 18 && /^[a-zA-Z\s]+$/.test(marca)) {
         marca.toLowerCase();
-        marca = marca.charAt(0).toUpperCase() + marca.slice(1).toLowerCase();
+        var colorTono = marca.split(" ");
+        if (colorTono.length > 1) {
+            marca = "";
+            for (i = 0; i < colorTono.length; i++) {
+                marca += colorTono[i].charAt(0).toUpperCase() + colorTono[i].slice(1).toLowerCase() + " ";
+            }
+        }
+        else {
+            marca = marca.charAt(0).toUpperCase() + marca.slice(1).toLowerCase();
+        }
+        marca.trim();
         $(cuadroMarca).val(marca);
         muestraAlerta(null, null, null, null, cuadroMarca, "lightgreen", "false");
         return true;
@@ -252,16 +262,19 @@ function recogeDatos(){
 
 // FUNCIONES PARA PAGINAR LA TABLA DE CONTENIDOS------------------------------------------------------------------------------
 
+// Función para la paginación y representación del array y los controles------------------------------------------------------
+
 function paginadora(pagina){
     var lineasPerPage = parseInt($("#paginador").val());
     var pages =  Math.ceil((coches.length) / lineasPerPage);
-    var paginas = "<button type='button' class='glyphicon glyphicon-circle-arrow-left controlPage' id='controlLeft'></button>";
-    for (i=0; i<pages; i++) {
-        paginas += "<button type='button' class='paginaIcon' id='page" + (i+1) + "' value='" + (i+1) + "'>" + (i+1) + "</button>";
+    var paginas = "<button type='button' class='glyphicon glyphicon-fast-backward controlPage' id='controlInicio'></button><button type='button' class='glyphicon glyphicon-triangle-left controlPage' id='controlLeft'></button>";
+    for (i=1; i<=pages; i++) {
+        paginas += "<button type='button' class='paginaIcon' id='page" + i + "' value='" + i + "'>" + i + "</button>";
     }
-    paginas += "<button type='button' class='glyphicon glyphicon-circle-arrow-right controlPage' id='controlRight'></button>";
+    paginas += "</button><button type='button' class='glyphicon glyphicon-triangle-right controlPage' id='controlRight'></button><button type='button' class='glyphicon glyphicon-fast-forward controlPage' id='controlFinal'>";
     $("#paginas").html(paginas);
-    if (!pagina) {
+    $("#paginas").css({"width": ((pages * 2) + 9.6) + "em"});
+    if(!pagina) {
         $(".paginaIcon").removeClass("currentPage");
         $("#page1").addClass("currentPage");
     }
@@ -270,14 +283,42 @@ function paginadora(pagina){
     }
     $("#controlLeft").click(function (){muevePagina(-1, pages);});
     $("#controlRight").click(function (){muevePagina(+1, pages);});
+    $("#controlInicio").click(function(){fastStep(document.getElementById("page1"));});
+    $("#controlFinal").click(function(){fastStep(document.getElementById("page" + pages));});
     $(".paginaIcon").click(function(){fastStep(this);});
-    var paginaSelect = $(".currentPage");
     var origenPagina = (parseInt($(".currentPage").val() -1) * lineasPerPage);
     var finalPagina = origenPagina + lineasPerPage;
     if (finalPagina >= coches.length) {finalPagina = coches.length;}
     var pageContent = coches.slice(parseInt(origenPagina), parseInt(finalPagina));
+    pageSelector(pagina);
     return pageContent;
 }
+
+// Función para gestionar el selector de página-----------------------------------------------------------------------------
+
+function pageSelector(pagina){
+    if (!pagina) {
+        var lineasPerPage = parseInt($("#paginador").val());
+        var pages =  Math.ceil((coches.length) / lineasPerPage);
+        var selectPage = "Pag. <select id='eligePagina'>";
+        for (i=1; i<=pages; i++) {
+            selectPage += "<option class='selectorPagina' value='" + i + "'>" + i + "</option>";
+        }
+        selectPage += "</select>"
+        $("#selectorPagina").html(selectPage);
+        $("#selectorPagina").css({"margin": ".15em .5em 0 0", "float": "right"});
+        $("#eligePagina").change(function(){fastStep(document.getElementById("page" + this.value));});
+        pagina = $(".currentPage").val() || 1;
+    }
+    else {
+        if (pagina < 1) {pagina = pages}
+        if (pagina > pages) {pagina = 1}
+    }
+    $(".selectorPagina").removeAttr("selected");
+    $(".selectorPagina").eq(pagina - 1).attr("selected", true);
+}
+
+// Función para el cambio de página mediante los controles------------------------------------------------------------------
 
 function muevePagina(step, pages) {
     var paginaActual = $(".currentPage");
@@ -291,7 +332,10 @@ function muevePagina(step, pages) {
     var paginaElegida = $("#page" + nuevaPagina);
     paginaElegida.addClass("currentPage");
     muestraDatos($(".currentPage"));
+    pageSelector(parseInt(paginaElegida.attr("id").replace("page", "")));
 }
+
+// Función para el cambio de página manual directo--------------------------------------------------------------------------
 
 function fastStep(pagina) {
     var pagina = pagina.value;
@@ -373,7 +417,6 @@ function editaDatos(boton) {
     $("#alta").click(function(){
         $(".botonEdit").attr("onclick", "editaDatos(this);");
         $(".botonBorrar").attr("onclick", "borraDatos(this);");
-        
     });
 }
 
@@ -477,8 +520,6 @@ function modalOn(){
 
 $(function(){ // FUNCION GLOBAL DE jQuery------------------------------------------------------------------------------------
 
-    $("#modalWindow").css("display", "none"); // Cerramos la ventana modal al cargar la página
-
     // Manejadores de evento de los botones----------------------------------------------------------------------------------
 
     $("#alta").click(function(){recogeDatos();muestraDatos($(".currentPage"))});
@@ -486,7 +527,7 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
 
     // Manejador de evento del selector de lineas de la tabla----------------------------------------------------------------
 
-    $("#paginador").change(function(){muestraDatos($("#page1"));});
+    $("#paginador").change(function(){muestraDatos($("#page1")); pageSelector();});
 
     // Manejadores de evento de los campos input-----------------------------------------------------------------------------
 
@@ -500,5 +541,4 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
     // Manejadores de alertas modales----------------------------------------------------------------------------------------
 
     $("#modalCloser").click(function(){reiniciarAlerta();});
-
-});
+})
