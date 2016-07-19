@@ -258,6 +258,7 @@ function recogeDatos(){
     }
     $("#alta").html("Alta");
     $("#alta").css("background-color", "#006dcc");
+    pageSelector((".selectorPagina").eq(pagina - 1));
 }
 
 // FUNCIONES PARA PAGINAR LA TABLA DE CONTENIDOS------------------------------------------------------------------------------
@@ -281,8 +282,10 @@ function paginadora(pagina){
     else {
         $("#page" + pagina.val()).addClass("currentPage");
     }
-    $("#controlLeft").click(function (){muevePagina(-1, pages);});
-    $("#controlRight").click(function (){muevePagina(+1, pages);});
+    if(window.innerWidth > 768) {
+        $("#controlLeft").click(function (){muevePagina(-1, pages);});
+        $("#controlRight").click(function (){muevePagina(+1, pages);});
+    }
     $("#controlInicio").click(function(){fastStep(document.getElementById("page1"));});
     $("#controlFinal").click(function(){fastStep(document.getElementById("page" + pages));});
     $(".paginaIcon").click(function(){fastStep(this);});
@@ -308,14 +311,16 @@ function pageSelector(pagina){
         $("#selectorPagina").html(selectPage);
         $("#selectorPagina").css({"margin": ".15em .5em 0 0", "float": "right"});
         $("#eligePagina").change(function(){fastStep(document.getElementById("page" + this.value));});
-        pagina = $(".currentPage").val() || 1;
+        pagina = $(".currentPage").eq() || $(".selectorPagina").eq(pagina - 1);
     }
     else {
         if (pagina < 1) {pagina = pages}
         if (pagina > pages) {pagina = 1}
     }
     $(".selectorPagina").removeAttr("selected");
+    $(".selectorPagina").removeAttr("disabled");
     $(".selectorPagina").eq(pagina - 1).attr("selected", true);
+    $(".selectorPagina").eq(pagina - 1).attr("disabled", true);
 }
 
 // Función para el cambio de página mediante los controles------------------------------------------------------------------
@@ -345,6 +350,25 @@ function fastStep(pagina) {
     var pages =  Math.ceil((coches.length) / lineasPerPage);
     var step = pagina - numeroPagina;
     muevePagina(step, pages);
+}
+
+// Función para la impresión de la tabla------------------------------------------------------------------------------------
+
+function imprimeTabla(){
+    $("#modalCloser").css("display", "none");
+    modalOn();
+    muestraAlerta("<h3>¿Desea imprimir la tabla de referencias mostrada en pantalla?</h3>", "<button type='button' class='btn btn-primary imprimidor' value='true'>SI</button><button type='button' class='btn btn-danger imprimidor' value='false'>NO</button>", "transparent", "transparent", "#alerta", "transparent", "false");
+    $(".imprimidor").click(function() {
+        var acceptado = "false";
+        acceptado = $(this).attr("value");
+        if (acceptado == "true"){
+            reiniciarAlerta();
+            window.print();
+        }
+    reiniciarAlerta();
+    $("#modalCloser").css("display", "inline-block");
+    pageSelector($(".currentPage").val());
+    });
 }
 
 // Función para mostrar los datos en la tabla-------------------------------------------------------------------------------
@@ -388,6 +412,7 @@ function borraDatos(boton) {
         $("#modalCloser").css("display", "inline-block");
         muestraDatos($(".currentPage"));
         reiniciarAlerta();
+        pageSelector($(".currentPage").val());
         });
     }
     else {
@@ -395,6 +420,7 @@ function borraDatos(boton) {
         var indice = identificador.replace("fila", "");
         coches.splice(parseInt(indice), 1);
         reiniciarAlerta();
+        pageSelector($(".currentPage").val());
     }
 }
 
@@ -431,7 +457,7 @@ function cuadroBusqueda() {
     reiniciarAlerta();
     $("#simbologia").html("");
     $("#buscador").css({"font-size": "1.5em", "color": "#006dcc"});
-    $("#buscador").html("<div id='searchBox' class='col-xs-12 col-md-8 col-md-offset-2'><select id='tipoBusqueda' autofocus class='text-center col-xs-10 col-sm-4'><option value='void' selected disabled>-- Campo --</option><option value='matricula'>Matrícula</option><option value='marca'>Marca</option><option value='modelo'>Modelo</option><option value='kms'>Kilometraje</option><option value='color'>Color</option><option value='precio'>Precio</option></select><input id='valorBusqueda' onfocus='this.select();' type='text' maxlenght='12' width='12' placeholder='Buscar' class='col-xs-10 col-sm-4 col-lg-5'><button id='lupa' type='button' class='glyphicon glyphicon-search col-xs-11 col-sm-2 col-md-1' onclick='buscaDatos(tipoBusqueda.value, valorBusqueda);'></button></div>");
+    $("#buscador").html("<div id='searchBox' class='col-xs-12 col-md-8 col-md-offset-2'><select id='tipoBusqueda' autofocus class='text-center col-xs-10 col-sm-4'><option value='void' selected disabled>-- Buscar por --</option><option value='matricula'>Matrícula</option><option value='marca'>Marca</option><option value='modelo'>Modelo</option><option value='kms'>Kilometraje</option><option value='color'>Color</option><option value='precio'>Precio</option></select><input id='valorBusqueda' onfocus='this.select();' type='text' maxlenght='12' width='12' placeholder='Buscar' class='col-xs-10 col-sm-4 col-lg-5'><button id='lupa' type='button' class='glyphicon glyphicon-search col-xs-11 col-sm-2 col-md-1' onclick='buscaDatos(tipoBusqueda.value, valorBusqueda);'></button></div>");
     $("#valorBusqueda").css("text-align", "right");
     $("#tipoBusqueda").css("text-align", "center");
     $("#tipoBusqueda").css("height", "1.7em");
@@ -441,11 +467,12 @@ function cuadroBusqueda() {
     $("#volverBusqueda").css("display", "inline-block");
     $("#tipoBusqueda").focus();
     $("#cuerpo").mouseup(function(newFocus){
-        if ((!$("#searchBox").is(newFocus.target) && $("#searchBox").has(newFocus.target).length == 0 && !$("#buscar").is(newFocus.target) && !$("#modalCloser").is(newFocus.target) && !$("#confirmar").is(newFocus.target) && !$("#denegar").is(newFocus.target) && !$(".botonBorrar").is(newFocus.target) && !$(".botonEdit").is(newFocus.target)) || $("#volverBusqueda").is(newFocus.target)) {
+        if ((!$("#searchBox").is(newFocus.target) && $("#searchBox").has(newFocus.target).length == 0 && !$("#buscar").is(newFocus.target) && !$("#modalCloser").is(newFocus.target) && !$("#confirmar").is(newFocus.target) && !$("#denegar").is(newFocus.target) && !$(".botonBorrar").is(newFocus.target) && !$(".botonEdit").is(newFocus.target) && !$("#printButton").is(newFocus.target) && !$(".imprimidor").is(newFocus.target)) || $("#volverBusqueda").is(newFocus.target)) {
             reiniciarAlerta();
             $("#buscador").html("");
             $("#buscador").css("background-color", "transparent");
             muestraDatos($(".currentPage"));
+            pageSelector($(".currentPage").val());
             $("#volverBusqueda").css("display", "none");
             $("#buscar").css("display", "inline-block");
             $("#cuerpo").off();
@@ -522,8 +549,9 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
 
     // Manejadores de evento de los botones----------------------------------------------------------------------------------
 
-    $("#alta").click(function(){recogeDatos();muestraDatos($(".currentPage"))});
+    $("#alta").click(function(){recogeDatos(); muestraDatos($(".currentPage"))});
     $("#buscar").click(function(){cuadroBusqueda()});
+    $("#printButton").click(function(){imprimeTabla()});
 
     // Manejador de evento del selector de lineas de la tabla----------------------------------------------------------------
 
@@ -538,7 +566,22 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
     $("#kms").change(function(){limpiaEntrada(this); validarKms(this);});
     $("#modelo").change(function(){limpiaEntrada(this); validarModelo(this);});
 
-    // Manejadores de alertas modales----------------------------------------------------------------------------------------
+    // Manejadores de cierre de alerta modal---------------------------------------------------------------------------------
 
     $("#modalCloser").click(function(){reiniciarAlerta();});
+
+    // Manejadores de entradas tactiles para mobile--------------------------------------------------------------------------
+
+    if(window.innerWidth <= 768) {
+        document.getElementById("tabla").addEventListener("touchmove", function(tocado){
+            var lineasPerPage = parseInt($("#paginador").val());
+            var pages =  Math.ceil((coches.length) / lineasPerPage);
+            tocado.preventDefault();
+            var origen = 0;
+            var objetoTocado = tocado.changedTouches[0];
+            var distancia = parseInt(objetoTocado.clientX) - origen;
+            if(distancia > 0) {muevePagina(+1, pages);}
+            if(distancia < 0) {muevePagina(-1, pages);}
+        });
+    }
 })

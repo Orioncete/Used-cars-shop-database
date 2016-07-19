@@ -80,7 +80,7 @@ td, th {
     color: bisque;
 }
 
-#confirmar, #denegar {
+#confirmar, #denegar, .imprimidor {
     width: 5em;
     margin: 0 1em;
 }
@@ -91,8 +91,8 @@ td, th {
     top: 6.5em;
     background-color: beige;
     border-radius: .5em;
-    width: 90%;
-    margin: 0 5%!important;
+    width: 70%;
+    margin: 0 15%!important;
     border: double 3px brown;
 }
 #modalCloser {
@@ -118,6 +118,7 @@ form input {
     margin: 0;
     margin-right: 1em;
 }
+
 form label {
     float: left;
     margin: 0;
@@ -185,11 +186,16 @@ tfoot {
 
 #printButton {
     float: left;
-    margin: .3em 0 0 .9em;
+    margin: .3em .4em 0 .5em;
     background-color: brown;
     color: beige;
     border: 0;
     border-radius: .1em;
+}
+#printButton:hover {
+    background-color: transparent;
+    color: brown;
+    outline: solid 1px brown;
 }
 
 #selectorPagina {
@@ -233,20 +239,28 @@ th:last-child {
 }
 
 @media screen and (max-width: 768px) {
+    html, body {
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
     #tipoBusqueda, #valorBusqueda {
-    min-width: 80%!important;
-    margin: 0 0 0 8%!important;
+        min-width: 80%!important;
+        margin: 0 0 0 8%!important;
     }
     #modalWindow {
-    top: 1em;
+        width: 90%;
+        margin: 0 5%!important;
+        top: 1em;
     }
     #modalWindow .glyphicon-remove-circle {
-      left: 0;
-      top: -.2em;
-      font-size: 3em;
+        left: 0;
+        top: -.2em;
+        font-size: 3em;
     }
     #ejemplo {
-      width: 80%;
+        width: 80%;
     }
     th:nth-child(4), th:nth-child(5), td:nth-child(4), td:nth-child(5) {
         display: none;
@@ -254,5 +268,34 @@ th:last-child {
     tbody td:nth-child(6) {
         text-align: right;
         padding-right: 0!important;
+    }
+    tbody td:nth-child(6):after {
+        content: "";
+    }
+    #printButton{
+        display: none;
+    }
+    #paginas{
+        display:none;
+    }
+
+    .bordes{
+        margin-left: .85em;
+        margin-right: .85em;
+    }
+    #tabla{
+        outline-offset: 0;
+        font-size: .85em;
+    }
+    .glyphicon-trash{
+        margin-left: .2em;
+    }
+    #selectorPagina {
+        position: relative;
+        right: 42%;
+    }
+    inputfield {
+        margin: 0 auto!important;
+        padding: 0!important;
     }
 }

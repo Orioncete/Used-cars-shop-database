@@ -6,11 +6,14 @@ Developed for an evaluation exercise, this software emulates a used cars shop da
 
 Download the full pack and boot index.html
 
-### Future features ###
+### Features ###
 
 * Firebase support
 * Improved UI & UX
 * Specific mobile touch control
+* Responsive design
+* Modal alerts
+* Printer support
 
 ### Contribution guidelines ###
 

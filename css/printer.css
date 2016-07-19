@@ -1,0 +1,67 @@
+form {
+    display: none;
+}
+.bordes {
+    display: none;
+}
+#botonera {
+    display: none;
+}
+/*
+tfoot {
+    display: none;
+}
+*/
+tr *:last-child {
+    display: none
+}
+.botonEdit {
+    display: none;
+}
+#buscador {
+    display: none;
+}
+
+#tabla {
+    -webkit-print-color-adjust: exact;
+    width: 20cm;
+    margin: 0 auto;
+    outline: 0;
+    display: inline-table;
+}
+td {
+    text-align: center;
+    outline: solid 2px grey;
+    margin: .5em 0!important;
+    color: black;
+}
+td:nth-child(4):after {
+    content: " Kms.";
+}
+td:nth-child(6):after {
+    content: " €";
+}
+td:nth-child(4) {
+    text-align: right!important;
+    width: 13em;
+    margin: 0 0 0 1em!important;
+    padding: 0 0 0 1em!important;
+}
+td:nth-child(6) {
+    text-align: right!important;
+    width: 10em;
+    margin: 0!important;
+    padding: 0!important;
+}
+header {
+    width: 57%;
+    margin: 0 auto;
+    color:black;
+}
+th {
+    display: table-cell;
+    background-color: black;
+    color: white;
+    border: 0;
+    outline: solid 2px black;
+}
