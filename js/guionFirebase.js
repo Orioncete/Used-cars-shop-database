@@ -124,7 +124,7 @@ function validarMarca(cuadroMarca) {
     }
     else {
         modalOn();
-        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y aseguresé de que sólo contienen nombres de marcas de<br>fabricantes (sin números).</h3>", "", "transparent", "transparent", cuadroMarca, "coral", "true");
+        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y aseguresé de que sólo contienen nombres de <br>marcas de fabricantes (sin números).</h3>", "", "transparent", "transparent", cuadroMarca, "coral", "true");
         return false;
     }
 }
@@ -346,7 +346,7 @@ function fastStep(pagina) {
     var pagina = pagina.value;
     var paginaActual = $(".currentPage");
     var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
-    var lineasPerPage =parseInt($("#paginador").val());
+    var lineasPerPage = parseInt($("#paginador").val());
     var pages =  Math.ceil((coches.length) / lineasPerPage);
     var step = pagina - numeroPagina;
     muevePagina(step, pages);
@@ -374,6 +374,7 @@ function imprimeTabla(){
 // Función para mostrar los datos en la tabla-------------------------------------------------------------------------------
 
 function muestraDatos(pagina){
+    if(window.innerWidth > 768 && coches) {$("header h1").prepend("<span style='font-size: 1.3em;'>" + coches.length + " </span>");}
     var pageContent = paginadora(pagina);
     var lineasPerPage =parseInt($("#paginador").val());
     var paginaActual = $(".currentPage");
@@ -389,6 +390,19 @@ function muestraDatos(pagina){
         $("#fila" + nuevoIndice).parent().children().last().append("<button onclick='editaDatos(this);' class='botonEdit glyphicon glyphicon-pencil'></button><button onclick='borraDatos(this);' class='botonBorrar glyphicon glyphicon-trash'></button>");
         $(".botoncicos").css("width", "4em");
     });
+    if(window.innerWidth <= 768) {
+        $("tbody td").click(function(){
+            reiniciarAlerta();
+            modalOn();
+            var info = ""
+            var hijos = this.parentElement.getElementsByTagName("td");
+            $.each(hijos, function(indice, objeto){
+                var nombreObjeto = objeto.id.replace(/\d/g, "");
+                info += "<h4><u>" + nombreObjeto.charAt(0).toUpperCase() + nombreObjeto.slice(1).toLowerCase() + ":</u> " + objeto.textContent + "</h4><br>";
+            });
+            muestraAlerta("", info, "transparent", "brown", "modalCloser", "transparent", "false");
+        });
+    }
 }
 
 // Funciones para borrar datos del Array "base de datos" (coches)-----------------------------------------------------------
@@ -457,7 +471,7 @@ function cuadroBusqueda() {
     reiniciarAlerta();
     $("#simbologia").html("");
     $("#buscador").css({"font-size": "1.5em", "color": "#006dcc"});
-    $("#buscador").html("<div id='searchBox' class='col-xs-12 col-md-8 col-md-offset-2'><select id='tipoBusqueda' autofocus class='text-center col-xs-10 col-sm-4'><option value='void' selected disabled>-- Buscar por --</option><option value='matricula'>Matrícula</option><option value='marca'>Marca</option><option value='modelo'>Modelo</option><option value='kms'>Kilometraje</option><option value='color'>Color</option><option value='precio'>Precio</option></select><input id='valorBusqueda' onfocus='this.select();' type='text' maxlenght='12' width='12' placeholder='Buscar' class='col-xs-10 col-sm-4 col-lg-5'><button id='lupa' type='button' class='glyphicon glyphicon-search col-xs-11 col-sm-2 col-md-1' onclick='buscaDatos(tipoBusqueda.value, valorBusqueda);'></button></div>");
+    $("#buscador").html("<div id='searchBox' class='col-xs-12 col-md-8 col-md-offset-2'><select id='tipoBusqueda' autofocus class='text-center col-xs-10 col-sm-4'><option value='void' selected disabled>-- Buscar por --</option><option value='matricula'>Matrícula</option><option value='marca'>Marca</option><option value='modelo'>Modelo</option><option value='kms'>Kilometraje max.</option><option value='color'>Color</option><option value='precio'>Precio máximo</option></select><input id='valorBusqueda' onfocus='this.select();' type='text' maxlenght='12' width='12' placeholder='Buscar' class='col-xs-10 col-sm-4 col-lg-5'><button id='lupa' type='button' class='glyphicon glyphicon-search col-xs-11 col-sm-2 col-md-1' onclick='buscaDatos(tipoBusqueda.value, valorBusqueda);'></button></div>");
     $("#valorBusqueda").css("text-align", "right");
     $("#tipoBusqueda").css("text-align", "center");
     $("#tipoBusqueda").css("height", "1.7em");
@@ -495,7 +509,7 @@ function buscaDatos(tipo, termino) {
             $("#contenidos").html("");
             $.each(coches, function(indice, coche) {
                 $.each(coche, function(propiedad, valor) {
-                    if (tipo == propiedad.slice(1) && termino.value == valor) {
+                    if ((tipo == propiedad.slice(1) && termino.value == valor) || (tipo == propiedad.slice(1) && propiedad.slice(1) == "color" && valor.indexOf(termino.value) != -1) || (tipo == propiedad.slice(1) && propiedad.slice(1) == "precio" && parseFloat(valor) < parseFloat(termino.value)) || (tipo == propiedad.slice(1) && propiedad.slice(1) == "kms" && parseFloat(valor) < parseFloat(termino.value))) {
                         var fila = "<tr class='lineaDatos' id='fila" + indice + "'></tr><br>";
                         $("#contenidos").append(fila);
                         $.each(coche, function(propiedad, valor) {
@@ -572,16 +586,25 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
 
     // Manejadores de entradas tactiles para mobile--------------------------------------------------------------------------
 
+    var inicio;
     if(window.innerWidth <= 768) {
-        document.getElementById("tabla").addEventListener("touchmove", function(tocado){
-            var lineasPerPage = parseInt($("#paginador").val());
-            var pages =  Math.ceil((coches.length) / lineasPerPage);
-            tocado.preventDefault();
-            var origen = 0;
-            var objetoTocado = tocado.changedTouches[0];
-            var distancia = parseInt(objetoTocado.clientX) - origen;
-            if(distancia > 0) {muevePagina(+1, pages);}
-            if(distancia < 0) {muevePagina(-1, pages);}
+        document.getElementById("tabla").addEventListener('touchstart', function(primerToque){
+            primerToque.stopPropagation();
+            var toque1st = primerToque.changedTouches[0];
+            inicio = parseInt(toque1st.clientX);
+            document.getElementById("tabla").addEventListener('touchend', function(segundoToque){
+                segundoToque.stopImmediatePropagation();
+                var toqueLast = segundoToque.changedTouches[0];
+                var dist = parseInt(toqueLast.clientX) - inicio;
+                var lineasPerPage = parseInt($("#paginador").val());
+                var pages =  Math.ceil((coches.length) / lineasPerPage);
+                if (dist > 0) {
+                    muevePagina(-1, pages);
+                }
+                if (dist < 0) {
+                    muevePagina(+1, pages);
+                }
+            });
         });
     }
 })

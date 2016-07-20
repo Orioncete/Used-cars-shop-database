@@ -26,7 +26,6 @@
   ],
   "dependencies": {
     "jQuery": "^3.1.0",
-    "bootstrap": "^3.3.6",
     "firebase": "^3.1.0"
   }
 }
