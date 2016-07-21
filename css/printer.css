@@ -57,6 +57,11 @@ header {
     width: 57%;
     margin: 0 auto;
     color:black;
+    font-family: sans-serif;
+    font-size: .86em;
+}
+header span {
+    display: none;
 }
 th {
     display: table-cell;
