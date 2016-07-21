@@ -4,7 +4,8 @@ Developed for an evaluation exercise, this software emulates a used cars shop da
 
 ### How do I get set up? ###
 
-Download the full pack and boot index.html
+Download the full pack and boot index.html 
+or go to: https://concesionario-d141f.firebaseapp.com
 
 ### Features ###
 

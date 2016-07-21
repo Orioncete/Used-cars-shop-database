@@ -1,0 +1,16 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+      "firebase": "Concesionario",
+      "public": "",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "bower_components/**",
+        "firebase-debug.log"
+      ]
+  }
+}

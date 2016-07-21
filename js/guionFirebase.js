@@ -236,7 +236,7 @@ function recogeDatos(){
             objeto[i + valor.name] = valor.value;
             i++;
         });
-        coches.push(objeto);
+        coches.unshift(objeto);
         baseDeDatos.ref("dataBase").set(coches);
         entradas.val("");
         entradas.css("background-color", "transparent");
@@ -374,7 +374,10 @@ function imprimeTabla(){
 // Función para mostrar los datos en la tabla-------------------------------------------------------------------------------
 
 function muestraDatos(pagina){
-    if(window.innerWidth > 768 && coches) {$("header h1").prepend("<span style='font-size: 1.3em;'>" + coches.length + " </span>");}
+    if(window.innerWidth > 768 && coches) {
+        $("#cantidad").html("");
+        $("#cantidad").html(coches.length + " ");
+    }
     var pageContent = paginadora(pagina);
     var lineasPerPage =parseInt($("#paginador").val());
     var paginaActual = $(".currentPage");
