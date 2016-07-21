@@ -79,7 +79,7 @@ td, th {
     width: 80%;
 }
 #ejemplo {
-    width: 30%;
+    width: 45%;
     margin: 1.5em auto;
     padding: .5em;
     border-radius: .7em;
@@ -107,6 +107,7 @@ td, th {
 }
 
 #simbologia, #alerta {
+    white-space: pre-line;
     width: 85%;
 }
 
@@ -296,7 +297,9 @@ header {
         margin-right: .85em;
     }
     #tabla{
-        outline-offset: 0;
+        display: inline-block;
+        overflow-x: hidden;
+        outline-offset: 0.15em;
         font-size: .85em;
     }
     .glyphicon-trash{

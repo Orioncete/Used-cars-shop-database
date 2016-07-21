@@ -1,10 +1,11 @@
 ### What is this repository for? ###
 
-Developed for an evaluation exercise, this software emulates a used cars shop database using a local array of JSON objects. Allows the user to add, edit, search & remove items on a responsive interface.
+Developed for an evaluation exercise, this software emulates a used cars shop database using a local array of JSON objects.
+Allows the user to add, edit, search & remove items on a responsive interface.
 
 ### How do I get set up? ###
 
-Download the full pack and boot index.html 
+Download the full pack and boot index.html
 or go to: https://concesionario-d414f.firebaseapp.com
 
 ### Features ###

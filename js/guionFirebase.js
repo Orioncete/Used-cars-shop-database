@@ -258,7 +258,6 @@ function recogeDatos(){
     }
     $("#alta").html("Alta");
     $("#alta").css("background-color", "#006dcc");
-    pageSelector((".selectorPagina").eq(pagina - 1));
 }
 
 // FUNCIONES PARA PAGINAR LA TABLA DE CONTENIDOS------------------------------------------------------------------------------
@@ -601,11 +600,13 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
                 var dist = parseInt(toqueLast.clientX) - inicio;
                 var lineasPerPage = parseInt($("#paginador").val());
                 var pages =  Math.ceil((coches.length) / lineasPerPage);
-                if (dist > 0) {
-                    muevePagina(-1, pages);
-                }
-                if (dist < 0) {
-                    muevePagina(+1, pages);
+                if (Math.abs(dist) > 50) {
+                    if (dist > 0) {
+                        muevePagina(-1, pages);
+                    }
+                    if (dist < 0) {
+                        muevePagina(+1, pages);
+                    }
                 }
             });
         });

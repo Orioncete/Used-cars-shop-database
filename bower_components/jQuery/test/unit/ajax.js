@@ -2417,140 +2417,113 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 				return jQuery.Deferred( function( defer ) {
 					jQuery( "#foo" ).load( options.url, function() {
 						var args = arguments;
-						assert.strictEqual( completeArgs[ options.url ].length, args.length, "same number of arguments (" + options.type + ")" );
-						jQuery.each( completeArgs[ options.url ], function( i, value ) {
-							assert.strictEqual( args[ i ], value, "argument #" + i + " is the same (" + options.type + ")" );
-						} );
-						defer.resolve();
-					} );
-				} );
-			} )
-		).always( done );
-	} );
+	0;
+	blinker = function(event){
+		if ( !counter ) {
+			$("#changes tbody td").text("");
+		}
+		var $el = event.data,
+			prev = $el.text();
+		prev = prev? prev +" | " : "";
+		return $el
+			.text(prev + ++counter+" " + (this.value.replace(/^on$/,"") || this.id || this.checked || ""))
+			.css("backgroundColor","#0f0")
+			.delay(800)
+			.queue(function(next){
+				$el.css("backgroundColor","#afa");
+				--counter;
+				next();
+			});
+	};
 
-	QUnit.test( "#2046 - jQuery.fn.load( String, Function ) with ajaxSetup on dataType json", 1, function( assert ) {
-		var done = assert.async();
+for ( var i=0; i < events.length; i++ ) {
+	var m = events[i].split("-"),
+		api = m[0],
+		type = m[1],
+		$row = $("<tr><th>"+type+" "+api+"</th></tr>");
 
-		jQuery.ajaxSetup( {
-			dataType: "json"
-		} );
-		jQuery( document ).ajaxComplete( function( e, xml, s ) {
-			assert.strictEqual( s.dataType, "html", "Verify the load() dataType was html" );
-			jQuery( document ).off( "ajaxComplete" );
-			done();
-		} );
-		jQuery( "#first" ).load( "data/test3.html" );
-	} );
+	$("#changes thead td").each(function(){
+		var id = "#"+this.id,
+			$cell = $("<td></td>");
+		if ( api == "onX" ) {
+			$(this).find("input, button, select, textarea").each(function(){
+				this["on"+type] = function(e){ e = $.event.fix(e||event); e.data = $cell; blinker.call(this, e); };
+			});
+		} else if ( api == "bind" ) {
+			$(this).find("input, button, select, textarea").bind(type, $cell, blinker);
+		} else {
+			$(id+" input,"+id+" button,"+id+" select,"+id+" textarea").live(type, $cell, blinker);
+		}
+		$row.append($cell);
+	});
+	$("#changes tbody").append($row);
+}
 
-	QUnit.test( "#10524 - jQuery.fn.load() - data specified in ajaxSettings is merged in", 1, function( assert ) {
-		var done = assert.async();
+// Ensure that cloned elements get the delegated event magic; this is
+// implementation-specific knowledge but otherwise impossible to test.
+// The beforeactivate event attaches a direct-bound change event.
+// (Only care about the live change for this third select element.)
+var sel1 = $("#select-one select:first-child");
+if ( typeof(sel1[0].fireEvent) !== "undefined" ) {
+	sel1.trigger( "beforeactivate" ).clone().appendTo("#select-one");
+	//alert($("#select-one select").map(function(){ return this._change_attached || "undef"; }).get().join("|"));
+}
 
-		var data = {
-			"baz": 1
-		};
-		jQuery.ajaxSetup( {
-			data: {
-				"foo": "bar"
-			}
-		} );
-		jQuery( "#foo" ).load( "data/echoQuery.php", data );
-		jQuery( document ).ajaxComplete( function( event, jqXHR, options ) {
-			assert.ok( ~options.data.indexOf( "foo=bar" ), "Data from ajaxSettings was used" );
-			done();
-		} );
-	} );
+jQuery.fn.blink = function(){
+	return this
+		.css("backgroundColor","green")
+		.text( (parseInt(this.text(), 10) || 0) + 1 )
+		.delay(700).queue(function(next){
+			jQuery(this).css("backgroundColor","#afa");
+			next();
+		});
+};
 
-// //----------- jQuery.post()
+jQuery.fn.addSubmitTest = function( id, prevent ) {
+	return this.live("submit", function(e){
+		if ( prevent ) {
+				e.preventDefault();
+		}
+		jQuery(id).blink();
+	});
+};
 
-	QUnit.test( "jQuery.post() - data", 3, function( assert ) {
-		var done = assert.async();
+$("#text_submit").addSubmitTest("#textSubmit", true);
+$("#password_submit").addSubmitTest("#passwordSubmit", true);
+$("#submit_submit").addSubmitTest("#submitSubmit", true);
+$("#prog_submit").addSubmitTest("#submitSubmit", true);
+$(document).bind("submit", function(){
+	jQuery("#boundSubmit").blink();
+});
 
-		jQuery.when(
-			jQuery.post(
-				url( "data/name.php" ),
-				{
-					xml: "5-2",
-					length: 3
-				},
-				function( xml ) {
-					jQuery( "math", xml ).each( function() {
-						assert.strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-						assert.strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
-					} );
-				}
-			),
-			jQuery.ajax( {
-				url: url( "data/echoData.php" ),
-				type: "POST",
-				data: {
-					"test": {
-						"length": 7,
-						"foo": "bar"
-					}
-				},
-				success: function( data ) {
-					assert.strictEqual( data, "test%5Blength%5D=7&test%5Bfoo%5D=bar", "Check if a sub-object with a length param is serialized correctly" );
-				}
-			} )
-		).always( function() {
-			done();
-		} );
-	} );
+</script>
+</body>
+</html>
+                           ady visited
+                // (it's faster to check for isObject first, than to
+                // get -1 from getIndex for non objects)
+                index1 = isObject1 ? getIndex(objects1, value1) : -1;
+                index2 = isObject2 ? getIndex(objects2, value2) : -1;
 
-	QUnit.test( "jQuery.post( String, Hash, Function ) - simple with xml", 4, function( assert ) {
-		var done = assert.async();
+                // determine the new pathes of the objects
+                // - for non cyclic objects the current path will be extended
+                //   by current property name
+                // - for cyclic objects the stored path is taken
+                newPath1 = index1 !== -1
+                    ? paths1[index1]
+                    : path1 + '[' + JSON.stringify(key) + ']';
+                newPath2 = index2 !== -1
+                    ? paths2[index2]
+                    : path2 + '[' + JSON.stringify(key) + ']';
 
-		jQuery.when(
-			jQuery.post(
-				url( "data/name.php" ),
-				{
-					"xml": "5-2"
-				},
-				function( xml ) {
-					jQuery( "math", xml ).each( function() {
-						assert.strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-						assert.strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
-					} );
-				}
-			),
-			jQuery.post( url( "data/name.php?xml=5-2" ), {}, function( xml ) {
-				jQuery( "math", xml ).each( function() {
-					assert.strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-					assert.strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
-				} );
-			} )
-		).always( function() {
-			done();
-		} );
-	} );
+                // stop recursion if current objects are already compared
+                if (compared[newPath1 + newPath2]) {
+                    return true;
+                }
 
-	QUnit.test( "jQuery[get|post]( options ) - simple with xml", 2, function( assert ) {
-		var done = assert.async();
-
-		jQuery.when.apply( jQuery,
-			jQuery.map( [ "get", "post" ], function( method ) {
-				return jQuery[ method ]( {
-					url: url( "data/name.php" ),
-					data: {
-						"xml": "5-2"
-					},
-					success: function( xml ) {
-						jQuery( "math", xml ).each( function() {
-							assert.strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
-						} );
-					}
-				} );
-			} )
-		).always( function() {
-			done();
-		} );
-	} );
-
-//----------- jQuery.active
-
-	QUnit.test( "jQuery.active", function( assert ) {
-		assert.expect( 1 );
-		assert.ok( jQuery.active === 0, "ajax active counter should be zero: " + jQuery.active );
-	} );
-
-} )();
+                // remember the current objects and their pathes
+                if (index1 === -1 && isObject1) {
+                    objects1.push(value1);
+                    paths1.push(newPath1);
+                }
+                if (i
