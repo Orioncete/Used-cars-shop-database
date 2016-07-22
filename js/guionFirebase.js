@@ -70,7 +70,7 @@ function patronMatricula(cuadroMatricula) {
         }
         else {
             modalOn();
-            muestraAlerta("<h3>La matrícula introducida no tiene el formato correcto.<br>Por favor introduzca una matrícula valida.</h3>", "<h4><u>Formatos admitidos:</u> <br><br>1234-LO<br>AB-1234-LO<br>1234-ABC</h4>", "transparent", "darkred", cuadroMatricula, "coral", "true");
+            muestraAlerta("<h3>La matrícula introducida no tiene el formato correcto.<br>Por favor introduzca una matrícula válida.</h3>", "<h4><u>Formatos admitidos:</u> <br><br>1234-LO<br>AB-1234-LO<br>1234-ABC</h4>", "transparent", "darkred", cuadroMatricula, "coral", "true");
             return false;
         }
     }
@@ -105,7 +105,7 @@ function matriculaUnica(cuadroMatricula) {
 
 function validarMarca(cuadroMarca) {
     var marca = cuadroMarca.value;
-    if (marca && marca != null && marca != "" && marca.length <= 18 && /^[a-zA-Z\s]+$/.test(marca)) {
+    if (marca && marca != null && marca != "" && marca.length <= 15 && /^[a-zA-Z\s]+$/.test(marca)) {
         marca.toLowerCase();
         var colorTono = marca.split(" ");
         if (colorTono.length > 1) {
@@ -124,7 +124,7 @@ function validarMarca(cuadroMarca) {
     }
     else {
         modalOn();
-        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y aseguresé de que sólo contienen nombres de <br>marcas de fabricantes (sin números).</h3>", "", "transparent", "transparent", cuadroMarca, "coral", "true");
+        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y asegúrese de que sólo contienen nombres de <br>marcas de fabricantes (sin números).</h3>", "", "transparent", "transparent", cuadroMarca, "coral", "true");
         return false;
     }
 }
@@ -153,7 +153,7 @@ function validarColor(cuadroColor) {
     else {
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y aseguresé de que son <u>nombres de colores y/o tonos.</u></h3>", "No se admiten notaciones numéricas <br> tipo RGB, HSL o Pantone, p.ej.", "transparent", "darkred", cuadroColor, "coral", "true");
+        muestraAlerta("<h3>Los datos introducidos no son válidos. Por favor,<br>revíselos y asegúrese de que son <u>nombres de colores y/o tonos.</u></h3>", "No se admiten notaciones numéricas <br> tipo RGB, HSL o Pantone, p.ej.", "transparent", "darkred", cuadroColor, "coral", "true");
         return false;
     }
 }
@@ -162,7 +162,7 @@ function validarColor(cuadroColor) {
 
 function validarPrecio(cuadroPrecio) {
     var precio = cuadroPrecio.value;
-    if (precio && precio != null && precio != "" && precio.length <= 11 && /^\d+(\.\d{1,4})?$/.test(precio) && parseFloat(precio) <= 1000000 && !isNaN(precio)) {
+    if (precio && precio != null && precio != "" && precio.length <= 12 && /^\d+(\.\d{1,2})?$/.test(precio) && parseFloat(precio) <= 1000000 && !isNaN(precio)) {
         $(cuadroPrecio).val(parseFloat(precio).toFixed(2));
         muestraAlerta(null, null, null, null, cuadroPrecio, "lightgreen", "false");
         return true;
@@ -170,7 +170,7 @@ function validarPrecio(cuadroPrecio) {
     else {
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>El precio introducido no es correcto. <br>Por favor, no use <u>valores superiores al millón</u> y recuerde <br>que sólo se admiten <u>cuatro decimales como máximo.</u></h3>", "<h4>Tampoco introduzca unidades monetarias como € o $.</h4>", "transparent", "darkred", cuadroPrecio, "coral", "true");
+        muestraAlerta("<h3>El precio introducido no es correcto. <br>Por favor, no use <u>valores superiores al millón</u> y recuerde <br>que sólo se admiten <u>dos decimales como máximo.</u></h3>", "<h4>Tampoco introduzca unidades monetarias como € o $.</h4>", "transparent", "darkred", cuadroPrecio, "coral", "true");
         return false;
     }
 }
@@ -179,7 +179,7 @@ function validarPrecio(cuadroPrecio) {
 
 function validarKms(cuadroKms) {
     var kms = cuadroKms.value;
-    if (!kms || kms == null || kms == "" || (kms.length >= 1 && kms.length <= 10 && /^\d+(\.\d{1,3})?$/.test(kms) && parseFloat(kms) <= 1000000 && !isNaN(kms))) {
+    if (!kms || kms == null || kms == "" || (kms.length >= 1 && kms.length <= 13 && /^\d+(\.\d{1,3})?$/.test(kms) && parseFloat(kms) <= 1000000 && !isNaN(kms))) {
         if (kms != "") {
             $(cuadroKms).val(parseFloat(kms).toFixed(2));
         }
@@ -192,7 +192,7 @@ function validarKms(cuadroKms) {
     else{
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>El kilometraje introducido no es correcto.<br>Por favor, aseguresé de no introducir valores superiores<br>al <u>millón de kilómetros</u> ni más de <u>tres decimales</u>.</h3>", "<h4>Tampoco introduzca <br>unidades de medida,<br> ni ninguna letra o simbolo.</h4>", "transparent", "darkred", cuadroKms, "coral", "true");
+        muestraAlerta("<h3>El kilometraje introducido no es correcto.<br>Por favor, asegúrese de no introducir valores superiores<br>al <u>millón de kilómetros</u> ni más de <u>tres decimales</u>.</h3>", "<h4>Tampoco introduzca <br>unidades de medida,<br> ni ninguna letra o símbolo.</h4>", "transparent", "darkred", cuadroKms, "coral", "true");
         return false;
     }
 }
@@ -204,7 +204,7 @@ function validarModelo(cuadroModelo) {
     if(!modelo || modelo == "" || modelo.length < 2 || modelo.length >10) {
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>El modelo introducido no es válido. Por favor,<br>aseguresé de rellenar este campo con menos de<br><u>diez caracteres</u> (sin contar espacios).</h3>", "Si es necesario emplee abreviaturas<br> o añada sólo referencias.", "transparent", "darkred", cuadroModelo, "coral", "true");
+        muestraAlerta("<h3>El modelo introducido no es válido. Por favor,<br>asegúrese de rellenar este campo con menos de<br><u>diez caracteres</u> (incluidos espacios).</h3>", "Si es necesario emplee abreviaturas<br> o añada sólo referencias.", "transparent", "darkred", cuadroModelo, "coral", "true");
         return false;
     }
     else {
@@ -299,7 +299,9 @@ function paginadora(pagina){
 // Función para gestionar el selector de página-----------------------------------------------------------------------------
 
 function pageSelector(pagina){
-    if (!pagina) {
+    $(".selectorPagina").removeAttr("selected");
+    $(".selectorPagina").removeAttr("disabled");
+    if (!pagina || isNaN(pagina)) {
         var lineasPerPage = parseInt($("#paginador").val());
         var pages =  Math.ceil((coches.length) / lineasPerPage);
         var selectPage = "Pag. <select id='eligePagina'>";
@@ -309,15 +311,18 @@ function pageSelector(pagina){
         selectPage += "</select>"
         $("#selectorPagina").html(selectPage);
         $("#selectorPagina").css({"margin": ".15em .5em 0 0", "float": "right"});
-        $("#eligePagina").change(function(){fastStep(document.getElementById("page" + this.value));});
+        $("#eligePagina").on("change", function(){
+            fastStep(document.getElementById("page" + this.value));
+        });
         pagina = $(".currentPage").eq() || $(".selectorPagina").eq(pagina - 1);
     }
     else {
         if (pagina < 1) {pagina = pages}
         if (pagina > pages) {pagina = 1}
+        $("#eligePagina").on("change", function(){
+            fastStep(document.getElementById("page" + this.value));
+        });
     }
-    $(".selectorPagina").removeAttr("selected");
-    $(".selectorPagina").removeAttr("disabled");
     $(".selectorPagina").eq(pagina - 1).attr("selected", true);
     $(".selectorPagina").eq(pagina - 1).attr("disabled", true);
 }
@@ -325,6 +330,7 @@ function pageSelector(pagina){
 // Función para el cambio de página mediante los controles------------------------------------------------------------------
 
 function muevePagina(step, pages) {
+    $("#eligePagina").off();
     var paginaActual = $(".currentPage");
     var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
     paginaActual.removeClass("currentPage");
@@ -342,12 +348,13 @@ function muevePagina(step, pages) {
 // Función para el cambio de página manual directo--------------------------------------------------------------------------
 
 function fastStep(pagina) {
+    $("#eligePagina").off();
     var pagina = pagina.value;
     var paginaActual = $(".currentPage");
     var numeroPagina = parseInt(paginaActual.attr("id").replace("page", ""));
     var lineasPerPage = parseInt($("#paginador").val());
     var pages =  Math.ceil((coches.length) / lineasPerPage);
-    var step = pagina - numeroPagina;
+    var step = parseInt(pagina) - numeroPagina;
     muevePagina(step, pages);
 }
 
@@ -565,7 +572,7 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
 
     // Manejadores de evento de los botones----------------------------------------------------------------------------------
 
-    $("#alta").click(function(){recogeDatos(); muestraDatos($(".currentPage"))});
+    $("#alta").click(function(){recogeDatos(); muestraDatos($(".currentPage")); pageSelector($(".currentPage").val());});
     $("#buscar").click(function(){cuadroBusqueda()});
     $("#printButton").click(function(){imprimeTabla()});
 

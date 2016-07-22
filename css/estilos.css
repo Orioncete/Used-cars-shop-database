@@ -332,3 +332,8 @@ header {
         box-shadow: -3px -3px 20px #ddc6ab inset ;
     }
 }
+@media screen and (max-width: 500px) {
+    table {
+        font-size: .6em!important;
+    }
+}
