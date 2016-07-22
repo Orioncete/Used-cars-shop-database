@@ -259,6 +259,9 @@ header {
         max-width: 100%;
         overflow-x: hidden;
     }
+    body {
+        padding-bottom: 2em;
+    }
     #tipoBusqueda, #valorBusqueda {
         min-width: 80%!important;
         margin: 0 0 0 8%!important;
@@ -335,5 +338,11 @@ header {
 @media screen and (max-width: 500px) {
     table {
         font-size: .6em!important;
+    }
+    #modalWindow h3 {
+        font-size: .2em!important;
+    }
+    #modalWindow h4 {
+        font-size: .8em!important;
     }
 }
