@@ -29,146 +29,164 @@
     <script src="js/guionFirebase.js" type="text/javascript" defer></script>
     <title>Tabla de contenido editable</title>
 </head>
+
+
 <body id="cuerpo">
     <header class="text-center">
         <h1><span id="cantidad" style='font-size: 1.3em;'></span>Vehículos disponibles en tienda</h1>
-    </header><br><br>
+    </header>
+    <br>
+    <br>
     <div class="container bordes">
-    <span class="small">Los campos que contengan asterisco (*) son obligatorios.</span>
-    <br><br>
-    <form action="" method="post" id="formulario" autocomplete="on">
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-        <fieldset>
-        <label class="required col-xs-12 col-md-5" for="matricula">Matrícula:</label>
-        <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="matricula" name="matricula" value="" placeholder="ES-1234-ABC" maxlength="11" required tabindex="1" title="Introduzca la matrícula del vehículo">
-        </fieldset>
-        <br><br>
-       </div>
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <fieldset>
-          <label class="required col-xs-12 col-md-5" for="marca">Marca:</label>
-          <input type="text" list="fabricantes" autocomplete="on" class="col-xs-12 col-md-5" id="marca" name="marca" value="" placeholder="Seat" required tabindex="2" title="Introduzca la marca del fabricante">
-          <datalist id="fabricantes">
-              <option value="Alfa Romeo"></option>
-              <option value="Aston Martin"></option>
-              <option value="Audi"></option>
-              <option value="Bentley"></option>
-              <option value="Bmw"></option>
-              <option value="Cadillac"></option>
-              <option value="Chevrolet"></option>
-              <option value="Citroen"></option>
-              <option value="Dacia"></option>
-              <option value="Ferrari"></option>
-              <option value="Fiat"></option>
-              <option value="Ford"></option>
-              <option value="Honda"></option>
-              <option value="Hyunday"></option>
-              <option value="Isuzu"></option>
-              <option value="Iveco"></option>
-              <option value="Jaguar"></option>
-              <option value="Jeep"></option>
-              <option value="Kia"></option>
-              <option value="Lada"></option>
-              <option value="Lamborghini"></option>
-              <option value="Lancia"></option>
-              <option value="Land Rover"></option>
-              <option value="Lexus"></option>
-              <option value="Lotus"></option>
-              <option value="Maserati"></option>
-              <option value="Mazda"></option>
-              <option value="Mc Laren"></option>
-              <option value="Mercedes"></option>
-              <option value="Mini"></option>
-              <option value="Mitsubishi"></option>
-              <option value="Nissan"></option>
-              <option value="Opel"></option>
-              <option value="Peugeot"></option>
-              <option value="Piaggio"></option>
-              <option value="Porsche"></option>
-              <option value="Renault"></option>
-              <option value="Rolls Royce"></option>
-              <option value="Seat"></option>
-              <option value="Skoda"></option>
-              <option value="Smart"></option>
-              <option value="Subaru"></option>
-              <option value="Suzuki"></option>
-              <option value="Tata"></option>
-              <option value="Tesla"></option>
-              <option value="Toyota"></option>
-              <option value="Volkswagen"></option>
-              <option value="Volvo"></option>
-          </datalist>
-          </fieldset><br><br>
-       </div>
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <fieldset>
-          <label class="required col-xs-12 col-md-5" for="modelo">Modelo:</label>
-          <input type="text" autocomplete="on" class="col-xs-12 col-md-5" id="modelo" name="modelo" value="" placeholder="León" required tabindex="3" title="Introduzca el modelo o referencia del vehículo">
-          </fieldset><br><br>
-       </div>
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <fieldset>
-          <label class="col-xs-12 col-md-5" for="kms">Kilómetros:</label>
-          <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="kms" name="kms" value="" placeholder="00.000" tabindex="4" title="Introduzca los Kms del vehículo">
-          </fieldset><br><br>
-       </div>
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <fieldset>
-          <label class="col-xs-12 col-md-5" for="color">Color:</label>
-          <input class="col-xs-12 col-md-5" list="colorines" autocomplete="on" type="text" id="color" name="color" value="" placeholder="Azul Celeste" tabindex="5" title="Introduzca el color del vehículo">
-          <datalist id="colorines">
-              <option value="Rojo"></option>
-              <option value="Rojo Claro"></option>
-              <option value="Rojo Oscuro"></option>
-              <option value="Rojo Metalizado"></option>
-              <option value="Azul"></option>
-              <option value="Azul Claro"></option>
-              <option value="Azul Oscuro"></option>
-              <option value="Azul Metalizado"></option>
-              <option value="Amarillo"></option>
-              <option value="Amarillo Claro"></option>
-              <option value="Amarillo Oscuro"></option>
-              <option value="Amarillo Metalizado"></option>
-              <option value="Verde"></option>
-              <option value="Verde Claro"></option>
-              <option value="Verde Oscuro"></option>
-              <option value="Verde Metalizado"></option>
-              <option value="Gris"></option>
-              <option value="Gris Claro"></option>
-              <option value="Gris Oscuro"></option>
-              <option value="Gris Metalizado"></option>
-              <option value="Marrón"></option>
-              <option value="Marrón Claro"></option>
-              <option value="Marrón Oscuro"></option>
-              <option value="Marrón Metalizado"></option>
-              <option value="Morado"></option>
-              <option value="Morado Claro"></option>
-              <option value="Morado Oscuro"></option>
-              <option value="Morado Metalizado"></option>
-              <option value="Violeta"></option>
-              <option value="Violeta Claro"></option>
-              <option value="Violeta Oscuro"></option>
-              <option value="Violeta Metalizado"></option>
-              <option value="Negro"></option>
-              <option value="Negro Metalizado"></option>
-              <option value="Blanco"></option>
-              <option value="Blanco metalizado"></option>
-              <option value="Negro Antracita"></option>
-              <option value="Marfil"></option>
-              <option value="Plateado"></option>
-              <option value="Dorado"></option>
-              <option value="Cromado"></option>
-          </datalist>
-          </fieldset><br><br>
-       </div>
-       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <fieldset>
-          <label class="col-xs-12 col-md-5 required" for="precio">Precio:</label>
-          <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="precio" name="precio" value="" placeholder="00.00" required tabindex="6" title="Introduzca el precio del vehículo">
-          </fieldset><br><br>
-       </div>
-    </form>
-    </div><br><br>
+        <span class="small">Los campos que contengan asterisco (*) son obligatorios.</span>
+        <br>
+        <br>
+        <form action="" method="" id="formulario" autocomplete="on">
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <fieldset>
+                <label class="required col-xs-12 col-md-5" for="matricula">Matrícula:</label>
+                <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="matricula" name="matricula" value="" placeholder="ES-1234-ABC" maxlength="11" required tabindex="1" title="Introduzca la matrícula del vehículo">
+            </fieldset>
+            <br>
+            <br>
+           </div>
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+              <fieldset>
+                  <label class="required col-xs-12 col-md-5" for="marca">Marca:</label>
+                  <input type="text" list="fabricantes" autocomplete="on" class="col-xs-12 col-md-5" id="marca" name="marca" value="" placeholder="Seat" required tabindex="2" title="Introduzca la marca del fabricante">
+                  <datalist id="fabricantes">
+                  <option value="Alfa Romeo"></option>
+                  <option value="Aston Martin"></option>
+                  <option value="Audi"></option>
+                  <option value="Bentley"></option>
+                  <option value="Bmw"></option>
+                  <option value="Cadillac"></option>
+                  <option value="Chevrolet"></option>
+                  <option value="Citroen"></option>
+                  <option value="Dacia"></option>
+                  <option value="Ferrari"></option>
+                  <option value="Fiat"></option>
+                  <option value="Ford"></option>
+                  <option value="Honda"></option>
+                  <option value="Hyunday"></option>
+                  <option value="Isuzu"></option>
+                  <option value="Iveco"></option>
+                  <option value="Jaguar"></option>
+                  <option value="Jeep"></option>
+                  <option value="Kia"></option>
+                  <option value="Lada"></option>
+                  <option value="Lamborghini"></option>
+                  <option value="Lancia"></option>
+                  <option value="Land Rover"></option>
+                  <option value="Lexus"></option>
+                  <option value="Lotus"></option>
+                  <option value="Maserati"></option>
+                  <option value="Mazda"></option>
+                  <option value="Mc Laren"></option>
+                  <option value="Mercedes"></option>
+                  <option value="Mini"></option>
+                  <option value="Mitsubishi"></option>
+                  <option value="Nissan"></option>
+                  <option value="Opel"></option>
+                  <option value="Peugeot"></option>
+                  <option value="Piaggio"></option>
+                  <option value="Porsche"></option>
+                  <option value="Renault"></option>
+                  <option value="Rolls Royce"></option>
+                  <option value="Seat"></option>
+                  <option value="Skoda"></option>
+                  <option value="Smart"></option>
+                  <option value="Subaru"></option>
+                  <option value="Suzuki"></option>
+                  <option value="Tata"></option>
+                  <option value="Tesla"></option>
+                  <option value="Toyota"></option>
+                  <option value="Volkswagen"></option>
+                  <option value="Volvo"></option>
+              </datalist>
+              </fieldset>
+              <br>
+              <br>
+           </div>
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+              <fieldset>
+                  <label class="required col-xs-12 col-md-5" for="modelo">Modelo:</label>
+                  <input type="text" autocomplete="on" class="col-xs-12 col-md-5" id="modelo" name="modelo" value="" placeholder="León" required tabindex="3" title="Introduzca el modelo o referencia del vehículo">
+              </fieldset>
+              <br>
+              <br>
+           </div>
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+              <fieldset>
+                  <label class="col-xs-12 col-md-5" for="kms">Kilómetros:</label>
+                  <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="kms" name="kms" value="" placeholder="00.000" tabindex="4" title="Introduzca los Kms del vehículo">
+              </fieldset>
+              <br>
+              <br>
+           </div>
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+              <fieldset>
+                  <label class="col-xs-12 col-md-5" for="color">Color:</label>
+                  <input class="col-xs-12 col-md-5" list="colorines" autocomplete="on" type="text" id="color" name="color" value="" placeholder="Azul Celeste" tabindex="5" title="Introduzca el color del vehículo">
+                  <datalist id="colorines">
+                  <option value="Rojo"></option>
+                  <option value="Rojo Claro"></option>
+                  <option value="Rojo Oscuro"></option>
+                  <option value="Rojo Metalizado"></option>
+                  <option value="Azul"></option>
+                  <option value="Azul Claro"></option>
+                  <option value="Azul Oscuro"></option>
+                  <option value="Azul Metalizado"></option>
+                  <option value="Amarillo"></option>
+                  <option value="Amarillo Claro"></option>
+                  <option value="Amarillo Oscuro"></option>
+                  <option value="Amarillo Metalizado"></option>
+                  <option value="Verde"></option>
+                  <option value="Verde Claro"></option>
+                  <option value="Verde Oscuro"></option>
+                  <option value="Verde Metalizado"></option>
+                  <option value="Gris"></option>
+                  <option value="Gris Claro"></option>
+                  <option value="Gris Oscuro"></option>
+                  <option value="Gris Metalizado"></option>
+                  <option value="Marrón"></option>
+                  <option value="Marrón Claro"></option>
+                  <option value="Marrón Oscuro"></option>
+                  <option value="Marrón Metalizado"></option>
+                  <option value="Morado"></option>
+                  <option value="Morado Claro"></option>
+                  <option value="Morado Oscuro"></option>
+                  <option value="Morado Metalizado"></option>
+                  <option value="Violeta"></option>
+                  <option value="Violeta Claro"></option>
+                  <option value="Violeta Oscuro"></option>
+                  <option value="Violeta Metalizado"></option>
+                  <option value="Negro"></option>
+                  <option value="Negro Metalizado"></option>
+                  <option value="Blanco"></option>
+                  <option value="Blanco metalizado"></option>
+                  <option value="Negro Antracita"></option>
+                  <option value="Marfil"></option>
+                  <option value="Plateado"></option>
+                  <option value="Dorado"></option>
+                  <option value="Cromado"></option>
+              </datalist>
+              </fieldset>
+              <br>
+              <br>
+           </div>
+           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+              <fieldset>
+                  <label class="col-xs-12 col-md-5 required" for="precio">Precio:</label>
+                  <input class="col-xs-12 col-md-5" autocomplete="off" type="text" id="precio" name="precio" value="" placeholder="00.00" required tabindex="6" title="Introduzca el precio del vehículo">
+              </fieldset>
+              <br>
+              <br>
+           </div>
+        </form>
+    </div>
+    <br>
+    <br>
     <div class="container">
 	    <table  id="tabla" class="table table-responsive">
 	      <thead>
