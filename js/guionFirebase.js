@@ -218,55 +218,6 @@ function validarModelo(cuadroModelo) {
     }
 }
 
-// FUNCIONES PARA EL MANEJO INTERNO DE DATOS-----------------------------------------------------------------------------
-
-// Función para recoger valores del formulario y generar objetos con ellos
-// dichos objetos se añaden tambien al Array general en esta misma función
-
-function recogeDatos(){
-    if(window.innerWidth <= 768 && $("#collapseForm").val() == "oculto" ) {
-        reiniciarAlerta();
-        modalOn();
-        muestraAlerta("<h3>Por favor, despliegue el formulario<br> de alta desde el botón superior</h3>", "", "transparent", "transparent", $("#modalCloser"), "transparent", "false");
-    }
-    else {
-        $("#simbologia").html("");
-        reiniciarAlerta();
-        var matricula = document.getElementById("matricula"), marca = document.getElementById("marca"), modelo = document.getElementById("modelo"), kms = document.getElementById("kms"), color = document.getElementById("color"), precio = document.getElementById("precio");
-        if(matriculaUnica(matricula) && validarMarca(marca) && validarModelo(modelo) && validarKms(kms) && validarColor(color) && validarPrecio(precio)) {
-            var objeto = {}, entradas = $("input"), i=0;
-            $.each(entradas, function(indice, valor){
-                if (valor.name == "kms" && valor.value == "") {
-                    valor.value = "0";
-                }
-                objeto[i + valor.name] = valor.value;
-                i++;
-            });
-            coches.unshift(objeto);
-            baseDeDatos.ref("dataBase").set(coches);
-            entradas.val("");
-            entradas.css("background-color", "transparent");
-            entradas[0].focus();
-            reiniciarAlerta();
-        }
-        else{
-            reiniciarAlerta();
-            var ejemplo = "<h4>";
-            if (!matriculaUnica(matricula)) {ejemplo += "&#x25CF Matrícula<br>"};
-            if (!validarMarca(marca)) {ejemplo += "&#x25CF Marca<br>"};
-            if (!validarModelo(modelo)) {ejemplo += "&#x25CF Modelo<br>"};
-            if (!validarKms(kms)) {ejemplo += "&#x25CF Kilometraje<br>"};
-            if (!validarColor(color)) {ejemplo += "&#x25CF Color<br>"};
-            if (!validarPrecio(precio)) {ejemplo += "&#x25CF Precio<br>"};
-            ejemplo += "</h4>";
-            modalOn();
-            muestraAlerta("<h3>Los siguientes campos contienen errores <br>que hacen imposible su validación <br>y admisión en la base de datos.<br><u>Por favor, revíselos;</u>", ejemplo, "transparent", "darkred", $("ejemplo"), "transparent", "false");
-        }
-        $("#alta").html("Alta");
-        $("#alta").css("background-color", "#006dcc");
-    }
-}
-
 // FUNCIONES PARA PAGINAR LA TABLA DE CONTENIDOS------------------------------------------------------------------------------
 
 // Función para la paginación y representación del array y los controles------------------------------------------------------
@@ -365,23 +316,59 @@ function fastStep(pagina) {
     muevePagina(step, pages);
 }
 
-// Función para la impresión de la tabla------------------------------------------------------------------------------------
+// FUNCIONES PARA EL MANEJO INTERNO DE DATOS-----------------------------------------------------------------------------
 
-function imprimeTabla(){
-    $("#modalCloser").css("display", "none");
-    modalOn();
-    muestraAlerta("<h3>¿Desea imprimir la tabla de referencias mostrada en pantalla?</h3>", "<button type='button' class='btn btn-primary imprimidor' value='true'>SI</button><button type='button' class='btn btn-danger imprimidor' value='false'>NO</button>", "transparent", "transparent", "#alerta", "transparent", "false");
-    $(".imprimidor").click(function() {
-        var acceptado = "false";
-        acceptado = $(this).attr("value");
-        if (acceptado == "true"){
+// Función para recoger valores del formulario y generar objetos con ellos
+// dichos objetos se añaden tambien al Array general en esta misma función
+
+function recogeDatos(){
+    if(window.innerWidth <= 768 && $("#collapseForm").val() == "oculto" ) {
+        reiniciarAlerta();
+        modalOn();
+        muestraAlerta("<h3>Por favor, despliegue  y rellene el formulario de alta desde el botón superior</h3>", "", "transparent", "transparent", $("#modalCloser"), "transparent", "false");
+    }
+    else {
+        $("#simbologia").html("");
+        reiniciarAlerta();
+        var matricula = document.getElementById("matricula"), marca = document.getElementById("marca"), modelo = document.getElementById("modelo"), kms = document.getElementById("kms"), color = document.getElementById("color"), precio = document.getElementById("precio");
+        if(matriculaUnica(matricula) && validarMarca(marca) && validarModelo(modelo) && validarKms(kms) && validarColor(color) && validarPrecio(precio)) {
+            var objeto = {}, entradas = $("input"), i=0;
+            $.each(entradas, function(indice, valor){
+                if (valor.name == "kms" && valor.value == "") {
+                    valor.value = "0";
+                }
+                objeto[i + valor.name] = valor.value;
+                i++;
+            });
+            coches.unshift(objeto);
+            baseDeDatos.ref("dataBase").set(coches);
+            entradas.val("");
+            entradas.css("background-color", "transparent");
+            entradas[0].focus();
             reiniciarAlerta();
-            window.print();
+            if(window.innerWidth <=768 && $("#collapseForm").val() == "visible") {
+                $(".bordes").css("display", "none");
+                $("#collapseForm").html("Formulario de alta");
+                $("#collapseForm").css({"background-color": "transparent", "color": "brown", "margin-top": "0"});
+                $("#collapseForm").attr("value", "oculto");
+            }
         }
-    reiniciarAlerta();
-    $("#modalCloser").css("display", "inline-block");
-    pageSelector($(".currentPage").val());
-    });
+        else{
+            reiniciarAlerta();
+            var ejemplo = "<h4>";
+            if (!matriculaUnica(matricula)) {ejemplo += "&#x25CF Matrícula<br>"};
+            if (!validarMarca(marca)) {ejemplo += "&#x25CF Marca<br>"};
+            if (!validarModelo(modelo)) {ejemplo += "&#x25CF Modelo<br>"};
+            if (!validarKms(kms)) {ejemplo += "&#x25CF Kilometraje<br>"};
+            if (!validarColor(color)) {ejemplo += "&#x25CF Color<br>"};
+            if (!validarPrecio(precio)) {ejemplo += "&#x25CF Precio<br>"};
+            ejemplo += "</h4>";
+            modalOn();
+            muestraAlerta("<h3>Los siguientes campos contienen errores <br>que hacen imposible su validación <br>y admisión en la base de datos.<br><u>Por favor, revíselos;</u>", ejemplo, "transparent", "darkred", $("ejemplo"), "transparent", "false");
+        }
+        $("#alta").html("Alta");
+        $("#alta").css("background-color", "#006dcc");
+    }
 }
 
 // Función para mostrar los datos en la tabla-------------------------------------------------------------------------------
@@ -460,7 +447,7 @@ function editaDatos(boton) {
     if(window.innerWidth <= 768 && $("#collapseForm").val() == "oculto") {
         $(".bordes").css("display", "block");
         $("#collapseForm").html("Ocultar formulario");
-        $("#collapseForm").css({"background-color": "brown", "color": "beige", "margin-bottom": "2em"});
+        $("#collapseForm").css({"background-color": "brown", "color": "beige", "margin-top": "2em"});
         $("#collapseForm").attr("value", "visible");
     }
     var linea = boton;
@@ -470,7 +457,7 @@ function editaDatos(boton) {
     var indice = identificador.replace("fila", "");
     $.each(coches[parseInt(indice)], function(nombre,valor){
     nombre = nombre.slice(1);
-        $("#" + nombre).val(valor);
+        $("#" + nombre).val(valor.trim());
     });
     baseDeDatos.ref("dataBase").set(coches);
     $("#alta").html("Confirmar");
@@ -482,7 +469,7 @@ function editaDatos(boton) {
         if(window.innerWidth <=768 && $("#collapseForm").val() == "visible") {
             $(".bordes").css("display", "none");
             $("#collapseForm").html("Formulario de alta");
-            $("#collapseForm").css({"background-color": "transparent", "color": "brown", "margin-bottom": "0"});
+            $("#collapseForm").css({"background-color": "transparent", "color": "brown", "margin-top": "0"});
             $("#collapseForm").attr("value", "oculto");
         }
     });
@@ -574,6 +561,25 @@ function buscaDatos(tipo, termino) {
     }
 }
 
+// Función para la impresión de la tabla------------------------------------------------------------------------------------
+
+function imprimeTabla(){
+    $("#modalCloser").css("display", "none");
+    modalOn();
+    muestraAlerta("<h3>¿Desea imprimir la tabla de referencias mostrada en pantalla?</h3>", "<button type='button' class='btn btn-primary imprimidor' value='true'>SI</button><button type='button' class='btn btn-danger imprimidor' value='false'>NO</button>", "transparent", "transparent", "#alerta", "transparent", "false");
+    $(".imprimidor").click(function() {
+        var acceptado = "false";
+        acceptado = $(this).attr("value");
+        if (acceptado == "true"){
+            reiniciarAlerta();
+            window.print();
+        }
+    reiniciarAlerta();
+    $("#modalCloser").css("display", "inline-block");
+    pageSelector($(".currentPage").val());
+    });
+}
+
 // FUNCIONES PARA EL MANEJO DE ALERTAS AL USUARIO----------------------------------------------------------------------------
 
 // Función para mostrar alertas----------------------------------------------------------------------------------------------
@@ -655,24 +661,33 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
         });
     }
 
+    // Reordenación de tabla y formulario en mobile--------------------------------------------------------------------------
+
+    if (window.innerWidth <= 768) {
+        var decoy = $("<div>");
+        $(".bordes").eq(0).before(decoy);
+        $("#contieneTabla").before($(".bordes").eq(0));
+        $(decoy).after($("#contieneTabla")).remove();
+    }
+
     // Colapsado de formulario para mobile-----------------------------------------------------------------------------------
 
     if (window.innerWidth <= 768) {
         $(".bordes").css("display", "none");
-        $(".bordes").before("<button class='btn btn-primary' id='collapseForm' value='oculto'>Formulario de alta</button>");
+        $(".bordes").after("<button class='btn btn-primary' id='collapseForm' value='oculto'>Formulario de alta</button>");
         $("#collapseForm").css({"background-color": "transparent", "color": "brown", "text-align": "center", "width": "45%", "margin": "0 27.5%", "border": 0, "border-radius": 0, "outline": "solid 2px brown"});
         $("#collapseForm").click(function(clickado){
             if ($("#collapseForm").val() == "visible") {
                 $(".bordes").css("display", "none");
                 $("#collapseForm").html("Formulario de alta");
-                $("#collapseForm").css({"background-color": "transparent", "color": "brown", "margin-bottom": "0"});
+                $("#collapseForm").css({"background-color": "transparent", "color": "brown", "margin-top": "0"});
                 $("#collapseForm").attr("value", "oculto");
                 return;
             }
             if ($("#collapseForm").val() == "oculto") {
                 $(".bordes").css("display", "block");
                 $("#collapseForm").html("Ocultar formulario");
-                $("#collapseForm").css({"background-color": "brown", "color": "beige", "margin-bottom": "2em"});
+                $("#collapseForm").css({"background-color": "brown", "color": "beige", "margin-top": "2em"});
                 $("#collapseForm").attr("value",  "visible");;
                 return;
             }
