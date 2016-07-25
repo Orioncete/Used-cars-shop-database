@@ -1,0 +1,6 @@
+{
+  "name": "Used-cars-shop-database",
+  "tagline": "This is an exercise to develop a virtual database for a used cars business. Based on an array of JSON objects, allows the user to search, add, remove and edit different fields on every entry of the DB. ",
+  "body": "### What is this repository for? ###\r\n\r\nDeveloped for an evaluation exercise, this software emulates a used cars shop database using a local array of JSON objects.\r\nAllows the user to add, edit, search & remove items on a responsive interface.\r\n\r\n### How do I get set up? ###\r\n\r\nDownload the full pack and boot index.html\r\nor go to: https://concesionario-d414f.firebaseapp.com\r\n\r\n### Features ###\r\n\r\n* Firebase support\r\n* Improved UI & UX\r\n* Specific mobile touch control\r\n* Responsive design\r\n* Modal alerts\r\n* Printer support\r\n\r\n### Contribution guidelines ###\r\n\r\n* HTML & CSS - Pedro Pablo Gonzalo & David Carrión\r\n* Bootstrap integration - David Carrión\r\n* Javascript & jQuery - Pedro Pablo Gonzalo (some validation functions developed by David Carrión).\r\n* Firebase integration - Pedro Pablo Gonzalo\r\n\r\n### Who do I talk to? ###\r\n\r\nuliaoth@hotmail.com",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
