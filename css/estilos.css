@@ -223,6 +223,7 @@ table {
 
 td {
     width: 12em;
+    white-space: nowrap;
 }
 tbody td:nth-child(6) {
     text-align: right;
@@ -256,7 +257,7 @@ header {
     html, body {
         margin: 0;
         padding: 0;
-        max-width: 100%;
+        max-width: 100vw;
         overflow-x: hidden;
     }
     body {
@@ -268,6 +269,8 @@ header {
     }
     #modalWindow {
         width: 90%;
+        max-height: 95vh;
+        overflow-y: scroll;
         margin: 0 5%!important;
         top: 1em;
         padding: 2em 0!important;
@@ -286,7 +289,7 @@ header {
         padding-right: 0!important;
     }
     tbody td:nth-child(6):after {
-        content: "";
+        content: " € ";
     }
     #printButton{
         display: none;
@@ -317,6 +320,7 @@ header {
         padding: 0!important;
     }
 }
+
 @media screen and (min-width: 769px) {
     body {
         background-image: url("../img/mercedes.png");

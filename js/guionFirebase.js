@@ -325,7 +325,7 @@ function recogeDatos(){
     if(window.innerWidth <= 768 && $("#collapseForm").val() == "oculto" ) {
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>Por favor, despliegue  y rellene el formulario de alta desde el botón superior</h3>", "", "transparent", "transparent", $("#modalCloser"), "transparent", "false");
+        muestraAlerta("<h3>Por favor, despliegue  y rellene el formulario de alta desde el botón superior</h3>", "", "transparent", "transparent", $("#collapseForm"), "lightgreen", "false");
     }
     else {
         $("#simbologia").html("");
@@ -539,8 +539,8 @@ function buscaDatos(tipo, termino) {
                 });
             });
             if ($("#contenidos").html() == "") {
-                $("#contenidos").html("<td colspan='2'><h3>No hay coincidencias</h3></td>");
-                $("#contenidos").css("white-space", "nowrap");
+                $("#contenidos").html("<tr><td colspan='5'><h1>No hay coincidencias</h1></td></tr>");
+                $("#contenidos").css({"white-space": "nowrap", "font-size": ".7em"});
             }
             $("#buscar").css("background-color", "#006dcc");
             $("#buscar").css("color", "beige");
@@ -634,6 +634,8 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
     // Manejadores de cierre de alerta modal---------------------------------------------------------------------------------
 
     $("#modalCloser").click(function(){reiniciarAlerta();});
+
+    //FUNCIONES PARA ADPTACION A DISPOSITIVOS MOVILES------------------------------------------------------------------------
 
     // Manejadores de entradas tactiles para mobile--------------------------------------------------------------------------
 
