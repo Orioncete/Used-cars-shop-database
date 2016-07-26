@@ -539,8 +539,9 @@ function buscaDatos(tipo, termino) {
                 });
             });
             if ($("#contenidos").html() == "") {
-                $("#contenidos").html("<tr><td colspan='5'><h1>No hay coincidencias</h1></td></tr>");
-                $("#contenidos").css({"white-space": "nowrap", "font-size": ".7em"});
+                while ($("thead").width() < $("table").width()) {
+                    $("#contenidos").append("&nbsp;");
+                }
             }
             $("#buscar").css("background-color", "#006dcc");
             $("#buscar").css("color", "beige");
