@@ -325,7 +325,7 @@ function recogeDatos(){
     if(window.innerWidth <= 768 && $("#collapseForm").val() == "oculto" ) {
         reiniciarAlerta();
         modalOn();
-        muestraAlerta("<h3>Por favor, despliegue  y rellene el formulario de alta desde el botón superior</h3>", "", "transparent", "transparent", $("#collapseForm"), "lightgreen", "false");
+        muestraAlerta("<h3>Por favor, despliegue  y rellene el formulario de alta desde el botón inferior</h3>", "", "transparent", "transparent", $("#collapseForm"), "lightgreen", "false");
     }
     else {
         $("#simbologia").html("");
@@ -636,7 +636,7 @@ $(function(){ // FUNCION GLOBAL DE jQuery---------------------------------------
 
     $("#modalCloser").click(function(){reiniciarAlerta();});
 
-    //FUNCIONES PARA ADPTACION A DISPOSITIVOS MOVILES------------------------------------------------------------------------
+    //FUNCIONES PARA ADAPTACION A DISPOSITIVOS MOVILES------------------------------------------------------------------------
 
     // Manejadores de entradas tactiles para mobile--------------------------------------------------------------------------
 
